@@ -1,17 +1,19 @@
 import { Badge } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
-  height: 60px;
+  height: 85px;
   ${mobile({ height: "50px" })}
 `;
 
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  padding: 10px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,13 +27,15 @@ const Left = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  font-size: 14px;
   cursor: pointer;
   ${mobile({ display: "none" })}
 `;
 
 const Image = styled.img`
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  ${mobile({ height: "20vh" })}
 `;
 
 const SearchContainer = styled.div`
@@ -66,7 +70,7 @@ const Right = styled.div`
 `;
 
 const MenuItem = styled.div`
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   margin-left: 25px;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
@@ -78,7 +82,7 @@ const Navbar = () => {
       <Wrapper>
         <Left>
           <ImageContainer>
-            <Image src="./public/rep-logo.png"/>
+            <Image src="https://i.ibb.co/7JTg0tf/rep-logo.png"/>
           </ImageContainer>
           <SearchContainer>
             <Input placeholder="Search" />
@@ -89,8 +93,8 @@ const Navbar = () => {
           <Logo>REP</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <MenuItem><AccountCircleOutlinedIcon /></MenuItem>
+          <MenuItem><FavoriteBorderOutlinedIcon/></MenuItem>
           <MenuItem>
             <Badge badgeContent={0} color="primary">
               <ShoppingCartOutlinedIcon/>

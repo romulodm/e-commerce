@@ -1,5 +1,5 @@
-import ArrowLeftOutlinedIcon from '@mui/icons-material/ArrowLeftOutlined';
-import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import { useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
@@ -17,7 +17,7 @@ const Container = styled.div`
 const Arrow = styled.div`
   width: 50px;
   height: 50px;
-  background-color: #fff7f7;
+  background-color: #646464;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -93,7 +93,7 @@ const Slider = () => {
     return(
         <Container>
             <Arrow direction="left" onClick={() => handleClick("left")}>
-                <ArrowLeftOutlinedIcon />
+                <ArrowBackOutlinedIcon style={{ color: '#ffffff' }} />
             </Arrow>
             <Wrapper slideIndex={slideIndex}>
                 {sliderItems.map((item) => (
@@ -110,7 +110,7 @@ const Slider = () => {
                 ))}
             </Wrapper>
             <Arrow direction="right" onClick={() => handleClick("right")}>
-                <ArrowRightOutlinedIcon />
+                <ArrowForwardOutlinedIcon style={{ color: '#ffffff' }}/>
             </Arrow>
         </Container>
     );
