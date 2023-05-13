@@ -5,15 +5,12 @@ const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require(
 
 //Update:
 router.put("/:id", verifyTokenAndAuthorization, UserController.modifyUser);
-/*
+
 //Delete:
 router.delete("/:id", verifyTokenAndAuthorization, UserController.deleteUser)
 //Get one user:
 router.get("/find/:id", verifyTokenAndAdmin, UserController.getUser)
 //Get all users:
 router.get("/find-all", verifyTokenAndAdmin, UserController.getAllUsers) 
-//Get status:
-router.get("/stats", verifyTokenAndAdmin, UserController.getStatus)
-*/
 
 module.exports = router;
