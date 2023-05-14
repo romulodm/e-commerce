@@ -18,7 +18,6 @@ module.exports = {
     },
 
     modifyPassword: (id, password) => {
-        console.log("asdas")
         return new Promise((acepted, rejected) => {
             DB.query('UPDATE users SET password=? WHERE id=?', 
             

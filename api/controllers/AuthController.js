@@ -28,7 +28,6 @@ module.exports = {
             const user = await AuthService.findUser(req.body.username);
     
             if (!user) {
-                console.log("entrei")
                 json.error = "Invalid credentials!"
                 return res.status(401).json({json});
               }
@@ -36,7 +35,6 @@ module.exports = {
             const hashedPassword = CryptoJS.AES.decrypt(user.Password, process.env.PASS_SEC);
             const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-            console.log(originalPassword)
             if (originalPassword !== req.body.password) {
                 json.error = "Wrong password!"
                 return res.status(401).json({json});
