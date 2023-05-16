@@ -96,7 +96,7 @@ const Navbar = () => {
           <MenuItem><AccountCircleOutlinedIcon /></MenuItem>
           <MenuItem><FavoriteBorderOutlinedIcon/></MenuItem>
           <MenuItem>
-            <Badge badgeContent={0} color="primary">
+            <Badge badgeContent={1} color="primary">
               <ShoppingCartOutlinedIcon/>
             </Badge>
           </MenuItem>
