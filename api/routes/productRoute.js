@@ -13,5 +13,7 @@ router.get("/find/:id", ProductController.getProduct)
 
 router.get("/find-all", ProductController.getAllProducts)
 
+router.get("/", ProductController.getByCategories)
+
 
 module.exports = router;

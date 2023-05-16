@@ -91,6 +91,17 @@ module.exports = {
         } catch (err) {
             res.status(500).json(err);
         }
+    },
+
+    getByCategories: async (req, res) => {
+        try {
+            const category = `["${req.query.category}"]`
+
+            const result = await ProductService.getByCategories(category);
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(500).json(err);
+        }
     }
 
 }

@@ -76,34 +76,6 @@ module.exports = {
         });
     },
 
-    modifyCategory: (id, category) => {
-        return new Promise((acepted, rejected) => {
-            DB.query('UPDATE products SET fk_product_category=? WHERE id=?', 
-            
-            [category, id], (error, results) => {
-                if(error) { 
-                    rejected(error); 
-                    return;
-                }
-                acepted(results);
-            })
-        });
-    },
-
-    modifySizes: (id, sizes) => {
-        return new Promise((acepted, rejected) => {
-            DB.query('UPDATE products SET sizes=? WHERE id=?', 
-            
-            [sizes, id], (error, results) => {
-                if(error) { 
-                    rejected(error); 
-                    return;
-                }
-                acepted(results);
-            })
-        });
-    },
-
     modifyPrice: (id, price) => {
         return new Promise((acepted, rejected) => {
             DB.query('UPDATE products SET price=? WHERE id=?', 
@@ -118,9 +90,37 @@ module.exports = {
         });
     },
 
+    modifyCategory: (id, category) => {
+        return new Promise((acepted, rejected) => {
+            DB.query('UPDATE products SET category=JSON_ARRAY(?) WHERE id=?', 
+            
+            [category, id], (error, results) => {
+                if(error) { 
+                    rejected(error); 
+                    return;
+                }
+                acepted(results);
+            })
+        });
+    },
+
+    modifySizes: (id, sizes) => {
+        return new Promise((acepted, rejected) => {
+            DB.query('UPDATE products SET sizes=JSON_ARRAY(?) WHERE id=?', 
+            
+            [sizes, id], (error, results) => {
+                if(error) { 
+                    rejected(error); 
+                    return;
+                }
+                acepted(results);
+            })
+        });
+    },
+
     modifyQuantity: (id, quantity) => {
         return new Promise((acepted, rejected) => {
-            DB.query('UPDATE products SET quantity=? WHERE id=?', 
+            DB.query('UPDATE products SET quantity=JSON_ARRAY(?) WHERE id=?', 
             
             [quantity, id], (error, results) => {
                 if(error) { 
@@ -174,6 +174,25 @@ module.exports = {
                         item.Category = JSON.parse(item.Category.replace(/\\/g, ''));
                         item.Sizes = JSON.parse(item.Sizes.replace(/\\/g, ''));
                         item.Quantity = JSON.parse(item.Quantity.replace(/\\/g, ''));
+                        return item
+                    });
+
+                    acepted(decodedResponse);
+                }
+            })
+        });
+    },
+
+    getByCategories: (categories) => {
+        return new Promise((acepted, rejected) => {
+            DB.query('SELECT * FROM products WHERE JSON_CONTAINS(Category, ?);', [categories], (error, results) => {
+                if(error) {
+                    rejected(error); 
+                    return;
+                }
+                if(results.length > 0){
+                    const decodedResponse = results.map((item) => {
+                        item.Category = JSON.parse(item.Category.replace(/\\/g, ''));
                         return item
                     });
 
