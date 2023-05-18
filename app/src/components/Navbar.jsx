@@ -6,13 +6,38 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
-  height: 85px;
+  height: 90px;
   ${mobile({ height: "50px" })}
 `;
 
+const ContainerCategory = styled.div`
+  display: flex;
+  align-items: center;
+  ${mobile({ height: "50px" })}
+`;
+
+const Categories = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CategoryItem = styled.div`
+  cursor: pointer;
+  align-items: center;
+  padding-right: 23px;
+  &:hover {
+      //color: #1976D2;
+      color: #A67C00;
+    }
+`
+
 const Wrapper = styled.div`
+  height: 90%;
   padding: 10px 30px;
   display: flex;
   align-items: center;
@@ -21,18 +46,17 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 1;
+  flex: 0.37;
   display: flex;
   align-items: center;
 `;
 
 const ImageContainer = styled.div`
-  cursor: pointer;
   ${mobile({ display: "none" })}
 `;
 
 const Image = styled.img`
-  width: 100%;
+  width: 55%;
   height: 100%;
   object-fit: cover;
   ${mobile({ height: "20vh" })}
@@ -40,6 +64,7 @@ const Image = styled.img`
 
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   margin-left: 25px;
@@ -48,6 +73,7 @@ const SearchContainer = styled.div`
 
 const Input = styled.input`
   border: none;
+  background-attachment: #e7e6e6;
   ${mobile({ width: "50px" })}
 `;
 
@@ -81,22 +107,38 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <ImageContainer>
-            <Image src="https://i.ibb.co/7JTg0tf/rep-logo.png"/>
-          </ImageContainer>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <SearchIcon style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
+            <ImageContainer>
+              <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
+                <Image src="https://i.ibb.co/thQcBw8/image-1.png" style={{cursor: "pointer"}}/>
+              </Link>   
+            </ImageContainer>
         </Left>
         <Center>
-          <Logo>REP</Logo>
+        <ContainerCategory>
+          <Categories>
+              <CategoryItem>Ofertas</CategoryItem>
+              <CategoryItem>Feminino</CategoryItem>
+              <CategoryItem>Masculino</CategoryItem>
+              <CategoryItem>Infantil</CategoryItem>
+              <CategoryItem>Adidas</CategoryItem>
+              <CategoryItem>Nike</CategoryItem>
+              <CategoryItem>Puma</CategoryItem>
+          </Categories>
+      </ContainerCategory>
         </Center>
         <Right>
-          <MenuItem><AccountCircleOutlinedIcon /></MenuItem>
+          <SearchContainer>
+            <Input placeholder="Buscar" />
+            <SearchIcon style={{ color: "black", fontSize: 16 }} />
+          </SearchContainer>
+          <MenuItem>
+            <Link to={`/login`} style={{color: 'inherit'}}>
+              <AccountCircleOutlinedIcon />
+            </Link>
+          </MenuItem>
           <MenuItem><FavoriteBorderOutlinedIcon/></MenuItem>
           <MenuItem>
-            <Badge badgeContent={1} color="primary">
+            <Badge badgeContent={0} color="primary">
               <ShoppingCartOutlinedIcon/>
             </Badge>
           </MenuItem>

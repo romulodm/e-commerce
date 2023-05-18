@@ -1,79 +1,123 @@
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import {mobile} from "../responsive";
+import { Link } from "react-router-dom"
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
+import React from "react";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
-      center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const ContainerRegister = styled.div`
+
 `;
 
 const Wrapper = styled.div`
-  width: 40%;
+  height: 500px;
   padding: 20px;
   background-color: white;
   ${mobile({ width: "75%" })}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.h1`
   font-size: 24px;
-  font-weight: 300;
+  font-weight: BOLD;
+`;
+
+const Image = styled.img`
+  width: 25vh;
+  height: 10vh;
+  //object-fit: cover;
+  ${mobile({ height: "20vh" })}
 `;
 
 const Form = styled.form`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 400px;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15), -2px -2px 4px rgba(255, 255, 255, 0.15);
+`;
+
+const InputContainer = styled.form`
+  height: 40px;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 `;
 
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 20px 10px 0px 0px;
+  margin: 10px 0;
   padding: 10px;
-`;
-
-const Agreement = styled.span`
-  font-size: 12px;
-  margin: 20px 0px;
+  border: none;
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
+  height: 40px;
   border: none;
+  border-radius: 5px;
   padding: 15px 20px;
   background-color: teal;
   color: white;
   cursor: pointer;
 `;
 
+const LinkContainer = styled.div`
+  margin-top: 10px;
+  width: 400px;
+  height: 2px;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15), -2px -2px 4px rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  color: gray;
+`;
+
+
 const Register = () => {
-  return (
-    <Container>
+  return ( 
+    <ContainerRegister>
       <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
+        <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
+          <Image src="https://i.ibb.co/thQcBw8/image-1.png" style={{cursor: "pointer"}}/>
+        </Link>
+        <Title>TORNE-SE UM MEMBRO</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Button>CREATE</Button>
+
+          <InputContainer>
+            <PersonIcon style={{ color: "gray"}}/>
+            <Input placeholder="Nome" />
+          </InputContainer>
+          <InputContainer>
+            <EmailIcon style={{ color: "gray"}}/>
+            <Input placeholder="E-mail" />
+          </InputContainer>
+          <InputContainer>
+            <LockIcon style={{ color: "gray"}}/>
+            <Input type='password' placeholder="Senha" />
+          </InputContainer>
+
+          <Button>Cadastrar-se</Button>
+        
         </Form>
+        <LinkContainer>
+          <Link to={`/login`} style={{color: 'inherit', textDecoration: 'none'}} >Entre na sua conta</Link>
+        </LinkContainer>
       </Wrapper>
-    </Container>
+    </ContainerRegister>
   );
 };
 

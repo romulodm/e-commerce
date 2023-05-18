@@ -2,7 +2,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
-import PinterestIcon from '@mui/icons-material/Pinterest';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import RoomIcon from '@mui/icons-material/Room';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
@@ -10,23 +10,28 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
   
 const Container = styled.div`
+    background-color: #000000;
+    color: white;
     display: flex;
     ${mobile({ flexDirection: "column" })}
 `;
-  
+
+const Termos = styled.div`
+  background-color:#282C31;
+  height: 200px;
+`
+
 const Left = styled.div`
-    flex: 1;
+    flex: 0.7;
     display: flex;
     flex-direction: column;
     padding: 20px;
+    margin-left: 40px;
 `;
   
-const Logo = styled.h1``;
-  
-const Desc = styled.p`
-    margin: 20px 0px;
+const Logo = styled.h1`
 `;
-  
+ 
 const SocialContainer = styled.div`
     display: flex;
 `;
@@ -35,12 +40,11 @@ const SocialIcon = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    color: white;
-    background-color: #${(props) => props.color};
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-right: 20px;
+    justify-content: left;
+    margin-right: 10px;
+    cursor: pointer;
 `;
   
 const Center = styled.div`
@@ -79,33 +83,11 @@ const ContactItem = styled.div`
     align-items: center;
 `;
   
-const Payment = styled.img`
-      width: 50%;
-`;
-  
 const Footer = () => {
     return (
       <Container>
         <Left>
-          <Logo>REP</Logo>
-          <Desc>
-            This site was created by FURG students, without commercial intentions. 
-            We put into practice concepts obtained in the classes and also try to extend them to create this e-commerce.
-          </Desc>
-          <SocialContainer>
-            <SocialIcon color="000000">
-              <FacebookIcon />
-            </SocialIcon>
-            <SocialIcon color="000000">
-              <InstagramIcon />
-            </SocialIcon>
-            <SocialIcon color="000000">
-              <TwitterIcon />
-            </SocialIcon>
-            <SocialIcon color="000000">
-              <PinterestIcon />
-            </SocialIcon>
-          </SocialContainer>
+          <Logo>REP Co.</Logo>
         </Left>
         <Center>
           <Title>Useful Links</Title>
@@ -114,12 +96,10 @@ const Footer = () => {
             <ListItem>Cart</ListItem>
             <ListItem>Man Fashion</ListItem>
             <ListItem>Woman Fashion</ListItem>
-            <ListItem>Accessories</ListItem>
-            <ListItem>My Account</ListItem>
             <ListItem>Order Tracking</ListItem>
-            <ListItem>Wishlist</ListItem>
-            <ListItem>Wishlist</ListItem>
             <ListItem>Terms</ListItem>
+            <ListItem>Suport</ListItem>
+            <ListItem>Help</ListItem>
           </List>
         </Center>
         <Right>
@@ -133,7 +113,22 @@ const Footer = () => {
           <ContactItem>
             <EmailOutlinedIcon style={{marginRight:"10px"}} /> demoraes.romulo@furg.br
           </ContactItem>
-          <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+          <ContactItem>
+            <SocialContainer>
+              <SocialIcon>
+                <FacebookIcon style={{ color: "#ffffff"}}/>
+              </SocialIcon>
+              <SocialIcon>
+                <InstagramIcon style={{ color: "#ffffff"}}/>
+              </SocialIcon>
+              <SocialIcon>
+                <TwitterIcon style={{ color: "#ffffff"}}/>
+              </SocialIcon>
+              <SocialIcon>
+                <GitHubIcon style={{ color: "#ffffff"}}/>
+              </SocialIcon>
+            </SocialContainer>
+          </ContactItem>
         </Right>
       </Container>
     );
