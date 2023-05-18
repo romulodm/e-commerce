@@ -47,17 +47,6 @@ const ProductList = () => {
           <FilterText>Filtrar Produtos:</FilterText>
           <Select>
             <Option disabled selected>
-              Color
-            </Option>
-            <Option>White</Option>
-            <Option>Black</Option>
-            <Option>Red</Option>
-            <Option>Blue</Option>
-            <Option>Yellow</Option>
-            <Option>Green</Option>
-          </Select>
-          <Select>
-            <Option disabled selected>
               Tamanho
             </Option>
             <Option>37</Option>

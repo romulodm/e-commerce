@@ -3,13 +3,16 @@ import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import Cart from "./pages/Cart";
+
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
 const App = () => {
   //const user = useSelector((state) => state.user.currentUser);
   const user = false
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
 
         <Route path='/' element={<Home/>} />
@@ -19,10 +22,11 @@ const App = () => {
 
         <Route path="/login" element={user ? <Navigate to="/" />  : <Login />}/>
         <Route path="/register" element={user ? <Navigate to="/" />  : <Register />}/>
+        <Route path="/reset-password" element={user ? <Navigate to="/" />  : <ResetPassword />}/>
 
 
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 

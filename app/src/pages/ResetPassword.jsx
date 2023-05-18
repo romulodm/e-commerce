@@ -2,10 +2,11 @@ import styled from "styled-components";
 import {mobile} from "../responsive";
 import { Link } from "react-router-dom"
 import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import React from "react";
 
-const ContainerLogin = styled.div`
+const ResetContainer = styled.div`
 
 `;
 
@@ -52,6 +53,17 @@ const InputContainer = styled.form`
   margin-bottom: 15px;
 `;
 
+const TextContainer = styled.form`
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  color: #939393;
+  text-align: center;
+`;
+
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
@@ -86,37 +98,34 @@ const LinkContainer = styled.div`
 `;
 
 
-const Login = () => {
+const ResetPassword = () => {
   return ( 
-    <ContainerLogin>
+    <ResetContainer>
       <Wrapper>
         <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
           <Image src="https://i.ibb.co/thQcBw8/image-1.png" style={{cursor: "pointer"}}/>
         </Link>
-        <Title>SUA CONTA PARA TUDO NA REP</Title>
+        <Title>ESQUECEU A SUA SENHA?</Title>
         <Form>
 
+          <TextContainer>
+            Insira o seu endereço de e-mail para receber uma mensagem com as informações necessárias para a redefinição de sua senha.
+          </TextContainer>
+
           <InputContainer>
-            <PersonIcon style={{ color: "gray"}}/>
+            <EmailIcon style={{ color: "gray"}}/>
             <Input placeholder="E-mail" />
           </InputContainer>
-          <InputContainer>
-            <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' placeholder="Senha" />
-          </InputContainer>
 
-          <Button>Entrar</Button>
+          <Button>Enviar</Button>
         
         </Form>
         <LinkContainer>
-          <Link to={`/reset-password`} style={{color: 'inherit', textDecoration: 'none'}}>Recupere sua senha</Link>
-        </LinkContainer>
-        <LinkContainer>
-          <Link to={`/register`} style={{color: 'inherit', textDecoration: 'none'}} >Crie uma conta</Link>
+          <Link to={`/login`} style={{color: 'inherit', textDecoration: 'none'}} >Voltar</Link>
         </LinkContainer>
       </Wrapper>
-    </ContainerLogin>
+    </ResetContainer>
   );
 };
 
-export default Login;
+export default ResetPassword;

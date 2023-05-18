@@ -41,7 +41,8 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
-  background-color: teal;
+  border-radius: 100%;
+  background-color: transparent;
   color: white;
 `;
 

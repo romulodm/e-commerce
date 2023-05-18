@@ -116,13 +116,33 @@ const Navbar = () => {
         <Center>
         <ContainerCategory>
           <Categories>
+            <Link to={`/products/ofertas`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Ofertas</CategoryItem>
+            </Link>
+
+            <Link to={`/products/feminino`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Feminino</CategoryItem>
+            </Link>
+
+            <Link to={`/products/masculino`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Masculino</CategoryItem>
+            </Link>
+            
+            <Link to={`/products/infantil`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Infantil</CategoryItem>
+            </Link>
+
+            <Link to={`/products/adidas`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Adidas</CategoryItem>
+            </Link> 
+
+            <Link to={`/products/nike`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Nike</CategoryItem>
+            </Link>
+
+            <Link to={`/products/puma`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Puma</CategoryItem>
+            </Link>
           </Categories>
       </ContainerCategory>
         </Center>
@@ -139,7 +159,9 @@ const Navbar = () => {
           <MenuItem><FavoriteBorderOutlinedIcon/></MenuItem>
           <MenuItem>
             <Badge badgeContent={0} color="primary">
-              <ShoppingCartOutlinedIcon/>
+              <Link to={`/cart`} style={{color: 'inherit'}}>
+                <ShoppingCartOutlinedIcon/>
+              </Link>
             </Badge>
           </MenuItem>
         </Right>

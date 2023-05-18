@@ -20,16 +20,15 @@ const Image = styled.img`
 
 const Info = styled.div`
   position: absolute;
-  top: 0;
+  bottom: -20px;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-`;
-
+  justify-content: flex-end;
+  `;
 
 const Title = styled.h1`
     color:white;
@@ -37,9 +36,11 @@ const Title = styled.h1`
 `;
 
 const Button = styled.button`
-    border:none;
+    border:0.8px solid lightgray;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15), -2px -2px 4px rgba(255, 255, 255, 0.15);
     padding: 10px;
-    background-color: white;
+    border-radius: 5px;
+    background-color: #ffffff;
     color:#000000;
     cursor: pointer;
     font-weight: 600;

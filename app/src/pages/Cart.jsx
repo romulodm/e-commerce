@@ -160,14 +160,14 @@ const Cart = () => {
       <Announcement />
       <Navbar />
       <Wrapper>
-        <Title>YOUR BAG</Title>
+        <Title>SEU CARRINHO</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <TopButton>CONTINUAR COMPRANDO</TopButton>
           <TopTexts>
             <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <TopButton type="filled">IR AO PAGAMENTO</TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -241,7 +241,7 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ 80</SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <Button>FECHAR PEDIDO</Button>
           </Summary>
         </Bottom>
       </Wrapper>
