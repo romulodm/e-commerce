@@ -112,15 +112,15 @@ const Button = styled.button`
   font-weight: 500;
 
   &:hover{
-      background-color: #f8f4f4;
+      background-color: #ebebeb;
   }
 `;
 
 const Product = () => {
   return (
     <Container>
-      <Navbar />
       <Announcement />
+      <Navbar />
       <Wrapper>
         <ImgContainer>
           <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
@@ -134,22 +134,17 @@ const Product = () => {
             tristique tortor pretium ut. Curabitur elit justo, consequat id
             condimentum ac, volutpat ornare.
           </Desc>
-          <Price>$ 20</Price>
+          <Price>R$ 20</Price>
           <FilterContainer>
             <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
+              <FilterTitle>Tamanho</FilterTitle>
               <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
+                <FilterSizeOption>37</FilterSizeOption>
+                <FilterSizeOption>38</FilterSizeOption>
+                <FilterSizeOption>39</FilterSizeOption>
+                <FilterSizeOption>40</FilterSizeOption>
+                <FilterSizeOption>41</FilterSizeOption>
+                <FilterSizeOption>42</FilterSizeOption>
               </FilterSize>
             </Filter>
           </FilterContainer>
@@ -159,7 +154,7 @@ const Product = () => {
               <Amount>1</Amount>
               <AddIcon />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button>ADD AO CARRINHO</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

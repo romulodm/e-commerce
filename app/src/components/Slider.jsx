@@ -17,7 +17,7 @@ const Container = styled.div`
 const Arrow = styled.div`
   width: 50px;
   height: 50px;
-  background-color: #646464;
+  background-color: #a1a1a1;
   border-radius: 50%;
   display: flex;
   align-items: center;
