@@ -41,8 +41,8 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 100%;
-  background-color: transparent;
+  background-color: teal;
+  color: white;
 `;
 
 const Newsletter = () => {

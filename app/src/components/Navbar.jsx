@@ -138,11 +138,9 @@ const Navbar = () => {
           </MenuItem>
           <MenuItem><FavoriteBorderOutlinedIcon/></MenuItem>
           <MenuItem>
-            <Link to={`/cart`} style={{color: 'inherit'}}>
-              <Badge badgeContent={1} color="primary">
-                <ShoppingCartOutlinedIcon/>
-              </Badge>
-            </Link>
+            <Badge badgeContent={0} color="primary">
+              <ShoppingCartOutlinedIcon/>
+            </Badge>
           </MenuItem>
         </Right>
       </Wrapper>
