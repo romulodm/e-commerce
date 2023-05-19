@@ -6,6 +6,9 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
+
 const Container = styled.div``;
 
 const Title = styled.h1`
@@ -37,6 +40,21 @@ const Select = styled.select`
 const Option = styled.option``;
 
 const ProductList = () => {
+
+  const location = useLocation();
+  const category = location.pathname.split("/")[2];
+  const [filters, setFilters] = useState({});
+
+  const handleFilters = (e) => {
+    const value = e.target.value;
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
+
+  const [sort, setSort] = useState("newest");
+
   return (
     <Container>
       <Announcement />
@@ -45,8 +63,8 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filtrar Produtos:</FilterText>
-          <Select>
-            <Option disabled selected>
+          <Select name="size" onChange={handleFilters}>
+            <Option disabled>
               Tamanho
             </Option>
             <Option>37</Option>
@@ -60,13 +78,13 @@ const ProductList = () => {
         </Filter>
         <Filter>
           <FilterText>Ordenar Produtos:</FilterText>
-          <Select>
-            <Option>Preço (crescente)</Option>
-            <Option>Preço (decrescente)</Option>
+          <Select onChange={(e) => setSort(e.target.value)}>
+            <Option value="asc">Preço (crescente)</Option>
+            <Option value="desc">Preço (decrescente)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products />
+      <Products category={category} filters={filters} sort={sort}/>
       <Newsletter />
       <Footer />
     </Container>

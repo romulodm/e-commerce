@@ -124,7 +124,7 @@ const Navbar = () => {
               <CategoryItem>Feminino</CategoryItem>
             </Link>
 
-            <Link to={`/products/masculino`} style={{color: 'inherit', textDecoration: 'none'}}>
+            <Link to={`/products/Masculino`} style={{color: 'inherit', textDecoration: 'none'}}>
               <CategoryItem>Masculino</CategoryItem>
             </Link>
             
