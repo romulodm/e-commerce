@@ -5,20 +5,25 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useSelector } from "react-redux";
+import { clearCart, incrementQuantity, decrementQuantity, removeProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
-const Container = styled.div``;
+const Container = styled.div`
+`;
 
 const Wrapper = styled.div`
+  min-height: 600px;
   padding: 20px;
   ${mobile({ padding: "10px" })}
 `;
 
 const Title = styled.h1`
   font-weight: 300;
+  font-size: 29px;
   text-align: center;
 `;
 
@@ -39,15 +44,6 @@ const TopButton = styled.button`
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0px 10px;
-`;
-
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
@@ -62,6 +58,10 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  border: 0.5px solid lightgray;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   ${mobile({ flexDirection: "column" })}
 `;
 
@@ -84,13 +84,6 @@ const Details = styled.div`
 const ProductName = styled.span``;
 
 const ProductId = styled.span``;
-
-const ProductColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-`;
 
 const ProductSize = styled.span``;
 
@@ -120,100 +113,150 @@ const ProductPrice = styled.div`
   ${mobile({ marginBottom: "20px" })}
 `;
 
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
-
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
-  height: 50vh;
+  height: 59.2vh;
 `;
 
 const SummaryTitle = styled.h1`
+  font-size: 29px;
   font-weight: 200;
+  text-align: center;
 `;
 
 const SummaryItem = styled.div`
-  margin: 30px 0px;
+  
+  margin-top: 35px;
   display: flex;
   justify-content: space-between;
   font-weight: ${(props) => props.type === "total" && "500"};
   font-size: ${(props) => props.type === "total" && "24px"};
 `;
 
-const SummaryItemText = styled.span``;
+const SummaryItemText = styled.span`
+`;
 
-const SummaryItemPrice = styled.span``;
+const SummaryItemPrice = styled.span`
+`;
 
 const Button = styled.button`
   width: 100%;
   padding: 10px;
+  margin-top: 8vh;
   background-color: black;
   color: white;
   font-weight: 600;
+  justify-content: center;
 `;
+
+const IconsButton = styled.button`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`; 
 
 const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
+  
+  const dispatch = useDispatch();
 
-  console.log(cart)
+  //remove all products of the cart
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  //add quantity
+  const handleIncrement = (productId, size) => {
+    dispatch(incrementQuantity({ productId, size }));
+  };
+
+  //dec quantity
+  const handleDecrement = (productId, size, quantity) => {
+    if (quantity === 1) {
+      handleRemoveProduct(productId, size);
+    } else {
+      dispatch(decrementQuantity({ productId, size }));
+    }
+  };
+
+  //remove product (if you drecrement product when quantity = 1)
+  const handleRemoveProduct = (productId) => {
+    dispatch(removeProduct({ productId }));
+  };
+
+  //att subtotal
+  const subtotal = cart.products.reduce((acc, product) => {
+    return acc + (product.Price * product.quantity);
+  }, 0);
+
+  const infoStyles = cart.quantity === 0
+  ? { border: "0.5px solid lightgray", borderRadius: "10px", marginRight: "10px"}
+  : { border: "none", marginRight: "0px" };
 
   return (
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
-        <Title>SEU CARRINHO</Title>
+      <Title>SEU CARRINHO {cart.quantity === 0 ? "ESTÁ VAZIO" : `(${cart.quantity})`}</Title>
         <Top>
+          <TopButton type="filled" onClick={() => handleClearCart()}>LIMPAR CARRINHO</TopButton>
           <TopButton>CONTINUAR COMPRANDO</TopButton>
-          <TopTexts>
-            <TopText>Carrinho de Compras({cart.quantity})</TopText>
-          </TopTexts>
-          <TopButton type="filled">IR AO PAGAMENTO</TopButton>
         </Top>
         <Bottom>
-        <Info>
+
+        <Info style={infoStyles}>
             {cart.products.map((product) => (
               <Product>
-                <ProductDetail>
-                  <Image src={product.Img} />
-                  <Details>
-                    <ProductName>
-                      <b>Produto:</b> {product.Title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product.Id}
-                    </ProductId>
-                    <ProductSize>
-                      <b>Tamanho:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
+                <Link to={`/product/${product.Id}`} style={{color: 'inherit', textDecoration: 'none'}}>
+                  <ProductDetail>
+                    <Image src={product.Img} />
+                    <Details>
+                      <ProductName>
+                        <b>Produto:</b> {product.Title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product.Id}
+                      </ProductId>
+                      <ProductSize>
+                        <b>Tamanho:</b> {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                </Link>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <AddIcon />
+                    <IconsButton onClick={() => handleDecrement(product.id, product.size, product.quantity)} >
+                      <RemoveIcon />
+                    </IconsButton>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <RemoveIcon />
+                    <IconsButton onClick={() => handleIncrement(product.id, product.size)} >
+                      <AddIcon />
+                    </IconsButton>
+
                   </ProductAmountContainer>
                   <ProductPrice>
                     R$ {product.Price * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
-              </Product>
+              </Product> 
             ))}
-            <Hr />
           </Info>
           <Summary>
             <SummaryTitle>RESUMO DO PEDIDO</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal:</SummaryItemText>
-              <SummaryItemPrice>R$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>R$ {subtotal}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Valor do frete:</SummaryItemText>
@@ -225,9 +268,11 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>R$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>R$ {subtotal}</SummaryItemPrice>
             </SummaryItem>
+
             <Button>FECHAR PEDIDO</Button>
+
           </Summary>
         </Bottom>
       </Wrapper>

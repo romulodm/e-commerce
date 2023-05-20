@@ -5,7 +5,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import React from "react";
 
-
+import { useState } from "react";
+import { login } from "../redux/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const ContainerLogin = styled.div`
@@ -88,8 +90,22 @@ const LinkContainer = styled.div`
   color: gray;
 `;
 
+const Error = styled.span`
+  color: red;
+`;
 
 const Login = () => {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.user);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    login(dispatch, { username, password });
+  };
+
   return ( 
     <ContainerLogin>
       <Wrapper>
@@ -101,13 +117,13 @@ const Login = () => {
 
           <InputContainer>
             <PersonIcon style={{ color: "gray"}}/>
-            <Input placeholder="E-mail" />
+            <Input placeholder="E-mail" onChange={(e) => setUsername(e.target.value)}/>
           </InputContainer>
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' placeholder="Senha" />
+            <Input type='password' placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
           </InputContainer>
-
+          {error && <Error>E-mail ou senha inválidos...</Error>}
           <Button>Entrar</Button>
         
         </Form>
