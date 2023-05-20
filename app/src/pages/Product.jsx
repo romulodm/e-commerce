@@ -121,6 +121,7 @@ const Product = () => {
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
+  const [sizes, setSizes] = useState([]);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
@@ -130,6 +131,8 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/product/find/" + id);
         setProduct(res.data);
+        const parsedSizes = JSON.parse(res.data.Sizes.replace(/'/g, '"'));
+        setSizes(parsedSizes);
       } catch {}
     };
     getProduct();
@@ -145,7 +148,7 @@ const Product = () => {
 
   const handleClick = () => {
     dispatch(
-      addProduct({ ...product, quantity, color, size })
+      addProduct({ ...product, quantity, size: size || sizes[0]})
     );
   };
 
@@ -160,23 +163,23 @@ const Product = () => {
         </ImgContainer>
         <InfoContainer>
           <Title>{product.Title}</Title>
-          <Desc>{product.Desc}</Desc>
+          <Desc>{product.Description}</Desc>
           <Price>R$ {product.Price}</Price>
           <FilterContainer>
-          <Filter>
-            {product && product.Sizes && (
-              <> 
-                <FilterTitle>Size</FilterTitle>
-                <FilterSize onChange={(e) => setSize(e.target.value)}>
-                  {JSON.parse(product.Sizes.replace(/'/g, '"')).map((s) => (
-                    <FilterSizeOption key={s} value={s}>
-                      {s}
-                    </FilterSizeOption>
-                  ))}
-                </FilterSize>
-              </>
-            )}
-          </Filter>
+            <Filter>
+              <FilterTitle>Size</FilterTitle>
+              <FilterSize
+                onChange={(e) => setSize(e.target.value)}
+                value={size}
+                defaultValue={sizes[0]}
+              >
+                {sizes.map((s) => (
+                  <FilterSizeOption key={s} value={s}>
+                    {s}
+                  </FilterSizeOption>
+                ))}
+              </FilterSize>
+            </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
