@@ -128,7 +128,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await publicRequest.get("/products/find/" + id);
+        const res = await publicRequest.get("/product/find/" + id);
         setProduct(res.data);
       } catch {}
     };
@@ -150,43 +150,41 @@ const Product = () => {
   };
 
   return (
+
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={product.Img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
-          </Desc>
-          <Price>R$ 20</Price>
+          <Title>{product.Title}</Title>
+          <Desc>{product.Desc}</Desc>
+          <Price>R$ {product.Price}</Price>
           <FilterContainer>
-            <Filter>
-              <FilterTitle>Tamanho</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>37</FilterSizeOption>
-                <FilterSizeOption>38</FilterSizeOption>
-                <FilterSizeOption>39</FilterSizeOption>
-                <FilterSizeOption>40</FilterSizeOption>
-                <FilterSizeOption>41</FilterSizeOption>
-                <FilterSizeOption>42</FilterSizeOption>
-              </FilterSize>
-            </Filter>
+          <Filter>
+            {product && product.Sizes && (
+              <> 
+                <FilterTitle>Size</FilterTitle>
+                <FilterSize onChange={(e) => setSize(e.target.value)}>
+                  {JSON.parse(product.Sizes.replace(/'/g, '"')).map((s) => (
+                    <FilterSizeOption key={s} value={s}>
+                      {s}
+                    </FilterSizeOption>
+                  ))}
+                </FilterSize>
+              </>
+            )}
+          </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <RemoveIcon />
-              <Amount>1</Amount>
-              <AddIcon />
+              <RemoveIcon onClick={() => handleQuantity("dec")} />
+              <Amount>{quantity}</Amount>
+              <AddIcon onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button>ADD AO CARRINHO</Button>
+            <Button onClick={handleClick}>Adicionar ao Carrinho</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

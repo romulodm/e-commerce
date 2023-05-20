@@ -147,7 +147,7 @@ module.exports = {
 
     getProduct: (id) => {
         return new Promise((acepted, rejected) => {
-            DB.query('SELECT * FROM product WHERE id = ?', [id], (error, results) => {
+            DB.query('SELECT * FROM products WHERE id = ?', [id], (error, results) => {
                 if(error) {
                     rejected(error); 
                     return;

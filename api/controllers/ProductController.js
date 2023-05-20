@@ -76,6 +76,7 @@ module.exports = {
         try {
             if(req.params.id){
                 const product = await ProductService.getProduct(req.params.id);
+                console.log(product)
                 res.status(200).json(product);
             }
         } catch (err) {

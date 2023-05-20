@@ -12,9 +12,6 @@ const Container = styled.div`
 `;
 
 const Products = ({ category, filters, sort }) => {
-
-  
-  
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   
