@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import {mobile} from "../responsive";
-import { Link } from "react-router-dom"
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
+import CloseIcon from '@mui/icons-material/Close';
 import React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom"
+import { resetError } from "../redux/userRedux";
 
 
 const ContainerLogin = styled.div`
@@ -90,20 +92,66 @@ const LinkContainer = styled.div`
   color: gray;
 `;
 
-const Error = styled.span`
-  color: red;
+const AlertContainer = styled.div`
+  display: ${props => (props.visible ? "flex" : "none")};
+  align-items: center;
+  margin-bottom: 15px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  height: 40px;
 `;
 
-const Login = () => {
+const AlertMessage = styled.div`
+  flex: 1;
+  min-width: 40%;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;`
 
-  const [username, setUsername] = useState("");
+const CloseButton = styled.button`
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  margin-top: 5px;
+  margin-right: 5px;
+  `;
+
+const Login = () => {
+  
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { error } = useSelector((state) => state.user);
+  const [showError, setShowError] = useState(false);
+  
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    testError();
+  }, [error]);
+
+  useEffect(() => {
+    testError();
+  }, [error]);
+
+  const handleAlertClose = () => {
+    setShowError(false);
+    dispatch(resetError());
+  };
+
+  const testError = () => {
+    if (error) {
+      setShowError(true);
+    } 
+  };
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    login(dispatch, { email, password });
+ 
   };
 
   return ( 
@@ -117,14 +165,19 @@ const Login = () => {
 
           <InputContainer>
             <PersonIcon style={{ color: "gray"}}/>
-            <Input placeholder="E-mail" onChange={(e) => setUsername(e.target.value)}/>
+            <Input placeholder="E-mail" onChange={(e) => setEmail(e.target.value)}/>
           </InputContainer>
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
             <Input type='password' placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
           </InputContainer>
-          {error && <Error>E-mail ou senha inválidos...</Error>}
-          <Button>Entrar</Button>
+
+          <AlertContainer visible={showError}>
+            <AlertMessage>E-mail ou senha inválidos...</AlertMessage>
+            <CloseButton onClick={handleAlertClose}><CloseIcon style={{ color:"#721c24"}}/></CloseButton>
+          </AlertContainer>
+          
+          <Button onClick={handleClick}>Entrar</Button>
         
         </Form>
         <LinkContainer>

@@ -17,9 +17,9 @@ module.exports = {
         });
     },
 
-    findUser: (username) => {
+    findUser: (email) => {
         return new Promise((acepted, rejected) => {
-            DB.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
+            DB.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
                 if(error) {
                     rejected(error); 
                     return;

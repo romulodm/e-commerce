@@ -25,7 +25,7 @@ module.exports = {
         try{
             let json = {error:'', result:{}}
 
-            const user = await AuthService.findUser(req.body.username);
+            const user = await AuthService.findUser(req.body.email);
     
             if (!user) {
                 json.error = "Invalid credentials!"

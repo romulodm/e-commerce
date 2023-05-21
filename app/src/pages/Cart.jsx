@@ -211,7 +211,9 @@ const Cart = () => {
       <Title>SEU CARRINHO {cart.quantity === 0 ? "ESTÁ VAZIO" : `(${cart.quantity})`}</Title>
         <Top>
           <TopButton type="filled" onClick={() => handleClearCart()}>LIMPAR CARRINHO</TopButton>
-          <TopButton>CONTINUAR COMPRANDO</TopButton>
+          <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
+            <TopButton>CONTINUAR COMPRANDO</TopButton>
+          </Link>
         </Top>
         <Bottom>
 
