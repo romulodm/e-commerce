@@ -223,7 +223,7 @@ const Cart = () => {
         <Info style={infoStyles}>
             {cart.products.map((product) => (
               <Product>
-                <Link to={`/product/${product.Id}`} style={{color: 'inherit', textDecoration: 'none'}}>
+                <Link to={`/product/${product.id}`} style={{color: 'inherit', textDecoration: 'none'}}>
                   <ProductDetail>
                     <Image src={product.img} />
                     <Details>

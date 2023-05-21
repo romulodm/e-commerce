@@ -81,7 +81,7 @@ const Button = styled.button`
   align-items: center;
   border-radius: 5px;
   padding: 15px 20px;
-  background-color: teal;
+  background-color: #800000;
   color: white;
   align-items: center;
   cursor: pointer;
@@ -118,7 +118,7 @@ const Profile = () => {
                         <ProfileInfo>
                             <ProfileInfoItens>
                                 <Name>{name}</Name>
-                                <Button onClick={handleLogout}><LogoutIcon style={{marginRight: '15px'}}/>Logout</Button>
+                                <Button onClick={handleLogout}><LogoutIcon style={{marginRight: '15px'}}/>Sair</Button>
                             </ProfileInfoItens>
                         </ProfileInfo>
                     </ProfileSession>

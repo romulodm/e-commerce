@@ -127,25 +127,20 @@ const Login = () => {
   const [showError, setShowError] = useState(false);
   
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   
   useEffect(() => {
     testError();
   }, [error]);
 
-  useEffect(() => {
-    testError();
-  }, [error]);
-
-  const handleAlertClose = () => {
-    setShowError(false);
-    dispatch(resetError());
-  };
-
   const testError = () => {
     if (error) {
       setShowError(true);
     } 
+  };
+
+  const handleAlertClose = () => {
+    setShowError(false);
+    dispatch(resetError());
   };
 
   const handleClick = (e) => {

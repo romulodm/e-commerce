@@ -10,3 +10,12 @@ export const login = async (dispatch, user) => {
     dispatch(loginFailure());
   }
 };
+
+export const register = async (user) => {
+  try {
+    const res = await publicRequest.post("/auth/register", user);
+    return true
+  } catch (err) {
+    return false
+  }
+};
