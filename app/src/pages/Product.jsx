@@ -147,8 +147,18 @@ const Product = () => {
   };
 
   const handleClick = () => {
+
+    const productObject = {
+      id: product.Id,
+      name: product.Title,
+      img: product.Img,
+      quantity: quantity,
+      size: size || sizes[0],
+      price: product.Price,
+    };
+
     dispatch(
-      addProduct({ ...product, quantity, size: size || sizes[0]})
+      addProduct(productObject)
     );
   };
 

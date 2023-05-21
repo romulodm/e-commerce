@@ -7,22 +7,28 @@ const cartSlice = createSlice({
     quantity: 0,
     total: 0,
   },
+  
   reducers: {
     addProduct: (state, action) => {
-      const productToAdd = action.payload;
-      const existingProduct = state.products.find((p) => p.id === productToAdd.id);
-      
-      //if alread exists one product with the "size", increment the quantity
-      if (existingProduct && existingProduct.size === productToAdd.size) {
-        existingProduct.quantity += action.payload.quantity;
-        state.quantity += action.payload.quantity;
-        state.total += productToAdd.Price;
+      const { id, title, img, quantity, size, price } = action.payload;
+      const existingProduct = state.products.find((p) => p.id === id && p.size.toString() === size.toString());
+    
+      if (existingProduct) {
+        console.log("encontrou")
+        existingProduct.quantity += quantity;
       } else {
-        productToAdd.quantity = 1;
-        state.quantity += action.payload.quantity;
-        state.products.push(productToAdd);
-        state.total += productToAdd.Price;
+        state.products.push({
+          id,
+          name: title,
+          img,
+          quantity,
+          size: size,
+          price,
+        });
       }
+    
+      state.quantity += quantity;
+      state.total += price;
     },
 
     clearCart: (state) => {
@@ -37,7 +43,7 @@ const cartSlice = createSlice({
       if (product) {
         product.quantity += 1;
         state.quantity += 1;
-        state.total += product.Price;
+        state.total += product.price;
       }
     },
     
@@ -47,23 +53,23 @@ const cartSlice = createSlice({
       if (product && product.quantity > 0) {
         product.quantity -= 1;
         state.quantity -= 1;
-        state.total -= product.Price;
+        state.total -= product.price;
       }
     },
 
     removeProduct: (state, action) => {
-      const { productId } = action.payload;
-      const productIndex = state.products.findIndex((p) => p.id === productId);
-
+      const { productId, size } = action.payload;
+      const productIndex = state.products.findIndex((p) => p.id === productId && p.size === size);
+    
       if (productIndex !== -1) {
         const removedProduct = state.products[productIndex];
         state.quantity -= removedProduct.quantity;
-        state.total -= removedProduct.Price * removedProduct.quantity;
+        state.total -= removedProduct.price * removedProduct.quantity;
         state.products.splice(productIndex, 1);
       }
     },
     
-},
+  },
 });
 
 export const { addProduct, clearCart, incrementQuantity, decrementQuantity, removeProduct } = cartSlice.actions;

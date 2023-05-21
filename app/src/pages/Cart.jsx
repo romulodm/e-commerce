@@ -162,7 +162,10 @@ const IconsButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-`; 
+  &:hover{
+      background-color: #e7e7e7;
+  }
+`;
 
 const Cart = () => {
 
@@ -190,13 +193,13 @@ const Cart = () => {
   };
 
   //remove product (if you drecrement product when quantity = 1)
-  const handleRemoveProduct = (productId) => {
-    dispatch(removeProduct({ productId }));
+  const handleRemoveProduct = (productId, size) => {
+    dispatch(removeProduct({ productId, size}));
   };
 
   //att subtotal
   const subtotal = cart.products.reduce((acc, product) => {
-    return acc + (product.Price * product.quantity);
+    return acc + (product.price * product.quantity);
   }, 0);
 
   const infoStyles = cart.quantity === 0
@@ -222,13 +225,13 @@ const Cart = () => {
               <Product>
                 <Link to={`/product/${product.Id}`} style={{color: 'inherit', textDecoration: 'none'}}>
                   <ProductDetail>
-                    <Image src={product.Img} />
+                    <Image src={product.img} />
                     <Details>
                       <ProductName>
-                        <b>Produto:</b> {product.Title}
+                        <b>Produto:</b> {product.name}
                       </ProductName>
                       <ProductId>
-                        <b>ID:</b> {product.Id}
+                        <b>ID:</b> {product.id}
                       </ProductId>
                       <ProductSize>
                         <b>Tamanho:</b> {product.size}
@@ -248,7 +251,7 @@ const Cart = () => {
 
                   </ProductAmountContainer>
                   <ProductPrice>
-                    R$ {product.Price * product.quantity}
+                    R$ {product.price * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product> 
