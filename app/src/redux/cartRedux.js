@@ -12,9 +12,8 @@ const cartSlice = createSlice({
     addProduct: (state, action) => {
       const { id, title, img, quantity, size, price } = action.payload;
       const existingProduct = state.products.find((p) => p.id === id && p.size.toString() === size.toString());
-    
+   
       if (existingProduct) {
-        console.log("encontrou")
         existingProduct.quantity += quantity;
       } else {
         state.products.push({

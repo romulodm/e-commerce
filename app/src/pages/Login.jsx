@@ -8,7 +8,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { resetError } from "../redux/userRedux";
 
 
@@ -129,6 +129,7 @@ const Login = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
+    console.log(password, email)
     testError();
   }, [error]);
 
@@ -145,8 +146,7 @@ const Login = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { email, password });
- 
+    login(dispatch, {"email":email,"password":password});
   };
 
   return ( 
