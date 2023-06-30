@@ -20,6 +20,15 @@ export const registerUser = async (user) => {
   }
 };
 
+export const checkEmail = async (email) => {
+  try {
+    const res = await publicRequest.post("/auth/check-email", email);
+    return res
+  } catch (err) {
+    return err.response
+  }
+};
+
 export const confirmationEmail = async (user) => {
   try {
     const res = await publicRequest.post("/email/confirmation", user);

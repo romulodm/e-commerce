@@ -3,17 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const registerSlice = createSlice({
   name: "register",
   initialState: {
-    code: false,
     errorMsg: "",
     showMsg: false,
+    sucess: false
   },
   reducers: {
-    setCode: (state, action) => {
-        state.code = action.payload;
-    },
-    resetCode: (state) => {
-        state.code = false;
-    },
     setMsg: (state, action) => {
         state.errorMsg = action.payload;
         state.showMsg = true
@@ -21,8 +15,14 @@ const registerSlice = createSlice({
     resetMsg: (state) => {
         state.errorMsg = "";
         state.showMsg = false
+    },
+    setSucess: (state) => {
+      state.sucess = true
+    },
+    resetSucess: (state) => {
+      state.sucess = false
     }
-  },
+  }
 });
 
 export const { setCode, resetCode, setMsg, resetMsg } = registerSlice.actions;

@@ -5,12 +5,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import CodeIcon from '@mui/icons-material/Code';
-import React from "react";
 
-import { useState, useEffect } from "react";
-import { registerUser, confirmationEmail, codeEmail } from "../redux/apiCalls";
+import React, { useState, useEffect } from "react";
+import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { setCode, resetCode, setMsg, resetMsg } from "../redux/registerRedux";
+import { setMsg, resetMsg } from "../redux/registerRedux";
 
 const ContainerRegister = styled.div`
 
@@ -112,6 +111,28 @@ const AlertMessage = styled.div`
   border: none;
 `;
 
+const SucessContainer =  styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  background-color: #d7f8d9;
+  color: #2a791a;
+  border: 1px solid #acffa8;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  height: 50px;
+  text-align: center;
+`;
+
+const SucessMessage = styled.div`
+      flex: 1;
+      min-width: 40%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+`;
+
 const ConfirmationContainer = styled.div`
   display: ${props => (props.visible ? "flex" : "none")};
   flex-direction: column;
@@ -161,71 +182,114 @@ function generateRandomCode() {
 }
 
 const Register = () => {
+  const register = useSelector((state) => state.register);
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [showEmailConfirmationMessage, setEmailConfirmationMessage] = useState(false);
-  const [codeEmailConfirmation, setEmailConfirmationCode] = useState("");
-  
-  const register = useSelector((state) => state.register);
-  const dispatch = useDispatch();
-
   const validateRegistration = () => {
-    const usernameRegex = /^[a-zA-Z\s]{5,}$/;
+    const usernameRegex = /^[a-zA-Z\s]{3,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!usernameRegex.test(username)) {
-      dispatch(setMsg("O seu nome deve ter pelo menos cinco caracteres (sem números ou símbolos especiais)."));
+    if (!usernameRegex.test(name)) {
+      dispatch(setMsg("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+
       return false;
     }
     if (!emailRegex.test(email)) {
-      dispatch(setMsg("O email deve ter pelo menos cinco caracteres e estar no formato correto."));
+      dispatch(setMsg("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+
       return false;
     }
     if (password.length < 5) {
-      dispatch(setMsg("A senha deve ter pelo menos cinco caracteres."));
+      dispatch(setMsg("A sua senha deve ter pelo menos cinco caracteres."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+
       return false;
     }
     return true;
   };
 
-  useEffect(() => {
-    testCode();
-  }, [register.code]);
-
-  const testCode = () => {
-    if (register.code) {
-      codeEmail({"email":email, "code":register.code})
-      setEmailConfirmationMessage(true);
-    } 
-  };
-
-  const handleClick = (e) => {
+  const registerButton = (e) => {
     e.preventDefault();
-  
-    if (validateRegistration() && !register.code) {
-      console.log("to aqui")
+    if (validateRegistration() && code === false) {
       const randomCode = generateRandomCode();
-      dispatch(setCode(randomCode));
+      setCode(randomCode);
     }
   };
 
+  // Lógica dos códigos enviados ao e-mail:
+  const [code, setCode] = useState(false);
+
+  const [showEmailConfirmationMessage, setEmailConfirmationMessage] = useState(false); // Exibir caixa de código
+  const [codeEmailConfirmation, setEmailConfirmationCode] = useState(""); // código a ser digitado
+
+  useEffect(() => {
+    testCode();
+  }, [code]);
+
+  const testCode = () => {
+    if (code != false){
+      const testEmail = checkEmail({"email":email});
+
+      testEmail.then(response => {
+        if (response.status === 200){
+          codeEmail({"email":email, "code":code});
+          setEmailConfirmationMessage(true);
+        } else {
+          dispatch(setMsg("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
+          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          restartRegister()
+        }}
+        ).catch(error => {
+          console.error(error)});
+      }
+  };
+
+  function restartRegister() {
+    setCode(false);
+    setEmailConfirmationMessage(false);
+    setEmailConfirmationCode("");
+    setUsername("");
+    setEmail("");
+    setPassword("");
+  };
+
   const checkEmailConfirmation = () => {
-    if (register.code === codeEmailConfirmation) {
+    if (code === codeEmailConfirmation) {
       const tryRegister = registerUser({"username":username, "email":email, "password":password})
-      console.log(tryRegister)
-      confirmationEmail({"name":username, "email":email})
-    } 
+
+      tryRegister.then(response => {
+        if (response.status === 201){
+          confirmationEmail({"username":username, "email":email})
+          restartRegister()
+          dispatch(setSucess());
+          setTimeout(() => { dispatch(resetSucess()) }, 5500)
+
+        } else {
+          dispatch(setMsg("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
+          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          restartRegister()
+        }}
+
+      ).catch(error => {
+        console.error(error)});
+    }
+
     else {
-      dispatch(setMsg("Infelizmente o código informado é inválido."))
+      dispatch(setMsg("Infelizmente o código informado é inválido."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
     }
   };
 
   const cancelRegister = () => {
-    dispatch(resetCode());
-    setEmailConfirmationMessage(false)
-    dispatch(resetMsg())
+    setCode(false)
+    setEmailConfirmationMessage(false);
+    dispatch(resetMsg());
   }
 
   return (  
@@ -236,6 +300,14 @@ const Register = () => {
         </Link>
         <Title>TORNE-SE UM MEMBRO</Title>
         <Form>
+
+          <React.Fragment>
+            {register.sucess && (
+              <SucessContainer>
+                <SucessMessage>Sua conta foi criada com sucesso!</SucessMessage>
+              </SucessContainer>
+            )}
+          </React.Fragment>
 
           <InputContainer>
             <PersonIcon style={{ color: "gray"}}/>
@@ -250,9 +322,13 @@ const Register = () => {
             <Input type='password' placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
           </InputContainer>
 
-          <AlertContainer visible={register.showMsg}>
-            <AlertMessage>{register.errorMsg}</AlertMessage>
-          </AlertContainer>
+          <React.Fragment>
+            {register.showMsg && (
+              <AlertContainer visible={register.showMsg}>
+                <AlertMessage>{register.errorMsg}</AlertMessage>
+              </AlertContainer>
+            )}
+          </React.Fragment>
 
           <ConfirmationContainer visible={showEmailConfirmationMessage}>
             <ConfirmationMessage>Insira o código que foi enviado para o seu e-mail:</ConfirmationMessage>

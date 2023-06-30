@@ -57,6 +57,20 @@ module.exports = {
         }catch(error){
             res.status(500).json(error);
         }
-    }
+    },
+
+    checkEmail: async (req, res) => {
+      try{
+          const email = AuthService.findUser(req.body.email);
+  
+          if (email) {
+            return res.status(404).json();
+          }  
+          res.status(200).json();
+        } catch (err) {
+          res.status(500).json(err);
+        }
+        
+  },
 
 }
