@@ -9,7 +9,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import React, { useState, useEffect } from "react";
 import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { setMsg, resetMsg } from "../redux/registerRedux";
+import { setMsg, resetMsg, setSucess, resetSucess } from "../redux/registerRedux";
 
 const ContainerRegister = styled.div`
 
@@ -193,7 +193,7 @@ const Register = () => {
     const usernameRegex = /^[a-zA-Z\s]{3,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!usernameRegex.test(name)) {
+    if (!usernameRegex.test(username)) {
       dispatch(setMsg("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
       setTimeout(() => { dispatch(resetMsg()) }, 5500)
 
@@ -342,7 +342,7 @@ const Register = () => {
             </ConfirmationButtons>
           </ConfirmationContainer>
 
-          <Button onClick={handleClick}>Cadastrar-se</Button>
+          <Button onClick={registerButton}>Cadastrar-se</Button>
         
         </Form>
         <LinkContainer>

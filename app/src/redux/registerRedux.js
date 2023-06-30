@@ -25,5 +25,5 @@ const registerSlice = createSlice({
   }
 });
 
-export const { setCode, resetCode, setMsg, resetMsg } = registerSlice.actions;
+export const { setMsg, resetMsg, setSucess, resetSucess } = registerSlice.actions;
 export default registerSlice.reducer;
