@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import {mobile} from "../responsive";
-import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 import React from "react";
 
 import { useState, useEffect } from "react";
-import { login } from "../redux/apiCalls";
+import { login, checkEmail } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
-import { resetError } from "../redux/userRedux";
+import { setMsg, resetMsg, loginSuccess } from "../redux/userRedux";
 
 
 const ContainerLogin = styled.div`
@@ -93,7 +93,6 @@ const LinkContainer = styled.div`
 `;
 
 const AlertContainer = styled.div`
-  display: ${props => (props.visible ? "flex" : "none")};
   align-items: center;
   margin-bottom: 15px;
   background-color: #f8d7da;
@@ -101,7 +100,7 @@ const AlertContainer = styled.div`
   border: 1px solid #f5c6cb;
   border-radius: 4px;
   margin-bottom: 15px;
-  height: 40px;
+  text-align: center;
 `;
 
 const AlertMessage = styled.div`
@@ -109,44 +108,81 @@ const AlertMessage = styled.div`
   min-width: 40%;
   margin: 10px 0;
   padding: 10px;
-  border: none;`
-
-const CloseButton = styled.button`
-  cursor: pointer;
-  background-color: transparent;
   border: none;
-  margin-top: 5px;
-  margin-right: 5px;
   `;
-
-const Login = () => {
   
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { error } = useSelector((state) => state.user);
-  const [showError, setShowError] = useState(false);
-  
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    console.log(password, email)
-    testError();
-  }, [error]);
+  const Login = () => {
+    
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const testError = () => {
-    if (error) {
-      setShowError(true);
-    } 
-  };
+    const loginButton = (e) => {
+      e.preventDefault();
+    
+      if (checkInputs() === false) {
+        return false
+      }
+    
+      const testEmail = checkEmail({ "email": email });
+    
+      testEmail
+        .then(response => {
+          if (response.status === 200) {
+            dispatch(setMsg("Não existe nenhuma conta cadastrada com este e-mail."));
+            setTimeout(() => { dispatch(resetMsg()) }, 7000);
+            restartLogin();
+          } else {
+            tryLogin();
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+    
+    function tryLogin() {
+      login({ "email": email, "password": password })
+        .then(response => {
+          console.log(response.status)
+          if (response.status === 200) {
+            console.log(response.data)
+            dispatch(loginSuccess(response.data));
+          }
+          if (response.status === 401) {
+            dispatch(setMsg("Senha incorreta."));
+            setTimeout(() => { dispatch(resetMsg()) }, 5000);
+          } else {
+            dispatch(setMsg("Algo de errado aconteceu com a sua tentativa de login, tente novamente mais tarde."));
+            setTimeout(() => { dispatch(resetMsg()) }, 7000);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+    
+  function checkInputs() {
+    if (email.length < 5) {
+      dispatch(setMsg("Por gentileza, preencha os campos do login corretamente."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
 
-  const handleAlertClose = () => {
-    setShowError(false);
-    dispatch(resetError());
-  };
+      return false;
+    }
+    if (password.length < 5) {
+      dispatch(setMsg("Por gentileza, preencha os campos do login corretamente."));
+      setTimeout(() => { dispatch(resetMsg()) }, 5500)
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    login(dispatch, {"email":email,"password":password});
+      return false;
+    }
+    return true
+  }
+
+  function restartLogin() {
+    setEmail("");
+    setPassword("");
   };
 
   return ( 
@@ -159,20 +195,23 @@ const Login = () => {
         <Form>
 
           <InputContainer>
-            <PersonIcon style={{ color: "gray"}}/>
-            <Input placeholder="E-mail" onChange={(e) => setEmail(e.target.value)}/>
+            <EmailIcon style={{ color: "gray"}}/>
+            <Input placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </InputContainer>
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
+            <Input type='password' placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </InputContainer>
 
-          <AlertContainer visible={showError}>
-            <AlertMessage>E-mail ou senha inválidos...</AlertMessage>
-            <CloseButton onClick={handleAlertClose}><CloseIcon style={{ color:"#721c24"}}/></CloseButton>
-          </AlertContainer>
+          <React.Fragment>
+            {user.showMsg && (
+              <AlertContainer visible={user.showMsg}>
+                <AlertMessage>{user.errorMsg}</AlertMessage>
+              </AlertContainer>
+            )}
+          </React.Fragment>
           
-          <Button onClick={handleClick}>Entrar</Button>
+          <Button onClick={loginButton}>Entrar</Button>
         
         </Form>
         <LinkContainer>

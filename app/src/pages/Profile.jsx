@@ -91,9 +91,8 @@ const Button = styled.button`
 const Profile = () => {
     const user = useSelector((state) => state.user.currentUser);
 
-    const name = user.json.result.Username;
+    const name = user.Username;
 
-    console.log(user.json.result.Username)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

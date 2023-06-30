@@ -7,7 +7,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import CodeIcon from '@mui/icons-material/Code';
 
 import React, { useState, useEffect } from "react";
-import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../redux/apiCalls";
+import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { setMsg, resetMsg, setSucess, resetSucess } from "../redux/registerRedux";
 
@@ -311,15 +311,15 @@ const Register = () => {
 
           <InputContainer>
             <PersonIcon style={{ color: "gray"}}/>
-            <Input placeholder="Nome" onChange={(e) => setUsername(e.target.value)}/>
+            <Input placeholder="Usuário"  value={username} onChange={(e) => setUsername(e.target.value)}/>
           </InputContainer>
           <InputContainer>
             <EmailIcon style={{ color: "gray"}}/>
-            <Input placeholder="E-mail" onChange={(e) => setEmail(e.target.value)}/>
+            <Input placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </InputContainer>
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
+            <Input type='password' value={password} placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
           </InputContainer>
 
           <React.Fragment>
@@ -334,7 +334,7 @@ const Register = () => {
             <ConfirmationMessage>Insira o código que foi enviado para o seu e-mail:</ConfirmationMessage>
             <InputContainer>
               <CodeIcon style={{ color: "gray"}}/>
-              <Input placeholder="Código" onChange={(e) => setEmailConfirmationCode(e.target.value)}/>
+              <Input placeholder="Código" value={code} onChange={(e) => setEmailConfirmationCode(e.target.value)}/>
             </InputContainer>
             <ConfirmationButtons>
               <ConfirmationButton style={{backgroundColor:"lightgreen"}} onClick={checkEmailConfirmation}>Confirmar</ConfirmationButton>

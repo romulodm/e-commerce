@@ -14,8 +14,8 @@ module.exports = {
           };
         
           try {
-            const savedUser = await AuthService.registerUser(newUser);
-            res.status(201).json(savedUser);
+            await AuthService.registerUser(newUser);
+            res.status(201).json("Successfully registered user!");
           } catch (err) {
             res.status(500).json(err);
           }
@@ -23,37 +23,35 @@ module.exports = {
 
     loginUser: async (req, res) => {
         try{
-            let json = {error:'', result:{}}
 
-            const user = await AuthService.findUser(req.body.email);
-    
-            if (!user) {
-                json.error = "Invalid credentials!"
-                return res.status(401).json({json});
-              }
+          const user = await AuthService.findUser(req.body.email);
+  
+          if (!user) {
+              return res.status(401).json("Invalid credentials!");
+            }
 
-            const hashedPassword = CryptoJS.AES.decrypt(user.Password, process.env.PASS_SEC);
-            const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+          const hashedPassword = CryptoJS.AES.decrypt(user.Password, process.env.PASS_SEC);
+          const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-            if (originalPassword !== req.body.password) {
-                json.error = "Wrong password!"
-                return res.status(401).json({json});
-              }
-    
-            const accessToken = jwt.sign(
-            {
-                id: user.id,
-                isAdmin: user.isAdmin,
-            },
-                process.env.JWT_SEC,
-                {expiresIn:"3d"}
-            );
+          if (originalPassword !== req.body.password) {
+              return res.status(404).json("Wrong password!");
+            }
 
-            const { password, ...others } = user;  
-                  
-            json.result = { ...others, accessToken };
-            res.status(200).json({json})
-            
+  
+          const accessToken = jwt.sign(
+          {
+              id: user.id,
+              isAdmin: user.isAdmin,
+          },
+              process.env.JWT_SEC,
+              {expiresIn:"3d"}
+          );
+
+          const userJson = JSON.parse(JSON.stringify(user));
+          const { Password, ...others } = userJson;
+
+          res.status(200).json({ ...others, accessToken });
+
         }catch(error){
             res.status(500).json(error);
         }
@@ -61,16 +59,14 @@ module.exports = {
 
     checkEmail: async (req, res) => {
       try{
-          const email = AuthService.findUser(req.body.email);
-  
+          const email = await AuthService.findUser(req.body.email);
           if (email) {
             return res.status(404).json();
           }  
           res.status(200).json();
         } catch (err) {
           res.status(500).json(err);
-        }
-        
+        }      
   },
 
 }

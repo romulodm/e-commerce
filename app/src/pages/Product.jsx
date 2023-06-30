@@ -9,7 +9,7 @@ import { mobile } from "../responsive";
 
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { publicRequest } from "../requestMethods";
+import { publicRequest } from "../axios/requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 

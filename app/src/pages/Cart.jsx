@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { userRequest } from "../requestMethods";
+
 import { useSelector } from "react-redux";
 import { clearCart, incrementQuantity, decrementQuantity, removeProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";

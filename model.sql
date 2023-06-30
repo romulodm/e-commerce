@@ -5,7 +5,7 @@ CREATE TABLE users (
   Password varchar(1000) NOT NULL,
   isAdmin TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (Id),
-  UNIQUE Email (Email ASC))
+  UNIQUE Email (Email ASC));
   
 CREATE TABLE products (
   Id int(15) unsigned NOT NULL AUTO_INCREMENT,
@@ -16,7 +16,7 @@ CREATE TABLE products (
   Category JSON NOT NULL,
   Sizes JSON NOT NULL,
   Quantity JSON NOT NULL,
-  PRIMARY KEY (Id))
+  PRIMARY KEY (Id));
   
 CREATE TABLE cart (
   User_id INT NOT NULL,

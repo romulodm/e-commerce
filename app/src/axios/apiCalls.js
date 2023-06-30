@@ -1,20 +1,18 @@
-import { loginFailure, loginStart, loginSuccess } from "./userRedux";
-import { publicRequest } from "../requestMethods";
+import { publicRequest } from "./requestMethods"
 
-export const login = async (dispatch, user) => {
-  dispatch(loginStart());
+export const login = async (user) => {
   try {
-    const res = await publicRequest.post("/auth/login", user);
-    dispatch(loginSuccess(res.data));
+    const res = publicRequest.post("/auth/login", user);
+    return res
   } catch (err) {
-    dispatch(loginFailure());
+    return err
   }
 };
 
 export const registerUser = async (user) => {
   try {
     const res = await publicRequest.post("/auth/register", user);
-    return true
+    return res
   } catch (err) {
     return false
   }
@@ -32,7 +30,7 @@ export const checkEmail = async (email) => {
 export const confirmationEmail = async (user) => {
   try {
     const res = await publicRequest.post("/email/confirmation", user);
-    return true
+    return res
   } catch (err) {
     return false
   }
