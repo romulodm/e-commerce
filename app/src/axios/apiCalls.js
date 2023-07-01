@@ -44,3 +44,21 @@ export const codeEmail = async (content) => {
     return false
   }
 };
+
+export const resetPasswordEmail = async (content) => {
+  try {
+    await publicRequest.post("/email/send-resetPassword", content);
+    return true
+  } catch (err) {
+    return false
+  }
+};
+
+export const modifyPassword = async (content) => {
+  try {
+    const res = await publicRequest.post("/auth/reset-password", content);
+    return res
+  } catch (err) {
+    return false
+  }
+};

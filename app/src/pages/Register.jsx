@@ -334,7 +334,7 @@ const Register = () => {
             <ConfirmationMessage>Insira o código que foi enviado para o seu e-mail:</ConfirmationMessage>
             <InputContainer>
               <CodeIcon style={{ color: "gray"}}/>
-              <Input placeholder="Código" value={code} onChange={(e) => setEmailConfirmationCode(e.target.value)}/>
+              <Input placeholder="Código" value={codeEmailConfirmation} onChange={(e) => setEmailConfirmationCode(e.target.value)}/>
             </InputContainer>
             <ConfirmationButtons>
               <ConfirmationButton style={{backgroundColor:"lightgreen"}} onClick={checkEmailConfirmation}>Confirmar</ConfirmationButton>

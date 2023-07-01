@@ -70,7 +70,7 @@ module.exports = {
         const mailOptions = {
           from: `${process.env.EMAIL_NAME}`,
           to: req.body.email,
-          subject: "Confirmação de Registro",
+          subject: "Código para Criação de Cadastro",
           html:`
           <body style="margin: 0; padding: 0;">
             <table class="outer table" style="border-spacing: 15px;" align="center" border="0" cellpadding="0" cellspacing="0" width="600" >
@@ -119,7 +119,7 @@ module.exports = {
         const mailOptions = {
           from: `${process.env.EMAIL_NAME}`,
           to: req.body.email,
-          subject: "Confirmação de Registro",
+          subject: "Redefinição de Senha",
           html:`
           <body style="margin: 0; padding: 0;">
             <table class="outer table" style="border-spacing: 15px;" align="center" border="0" cellpadding="0" cellspacing="0" width="600" >
@@ -135,7 +135,7 @@ module.exports = {
                       <td>
                         <p align="center" style="color: #000000; font-size: 20px; font-weight: bold;">Use o código abaixo para resetar a sua senha:</p>
                   
-                        <div style="width: 300px; border: none; border-radius: 5px; background-color: #8ABDFF; color: white; font-size: 30px; font-weight: bold; text-align: center; margin: 0 auto;">
+                        <div style="width: 300px; border: none; border-radius: 5px; background-color: #C7E1AD; color: white; font-size: 30px; font-weight: bold; text-align: center; margin: 0 auto;">
                           <div align="center" style="padding: 10px 0px 10px 0px;">${req.body.code}</div>
                         </div>
   

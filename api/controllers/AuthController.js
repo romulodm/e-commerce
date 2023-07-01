@@ -26,15 +26,11 @@ module.exports = {
 
           const user = await AuthService.findUser(req.body.email);
   
-          if (!user) {
-              return res.status(401).json("Invalid credentials!");
-            }
-
           const hashedPassword = CryptoJS.AES.decrypt(user.Password, process.env.PASS_SEC);
           const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
           if (originalPassword !== req.body.password) {
-              return res.status(404).json("Wrong password!");
+              return res.status(201).json("Wrong password!");
             }
 
   
@@ -67,6 +63,23 @@ module.exports = {
         } catch (err) {
           res.status(500).json(err);
         }      
-  },
+    },
 
+    modifyPassword: async (req, res) => {
+      try {
+        console.log(req.body)
+        if(req.body.password) {
+          req.body.password = CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.PASS_SEC
+        ).toString();}
+      
+        var updatedUser = await AuthService.modifyPassword(req.body.password, req.body.email)
+        if (updatedUser) {
+          res.status(200).json("Password reseted!");
+        }
+      } catch (err) {
+        res.status(500).json(err);
+      } 
+    }
 }

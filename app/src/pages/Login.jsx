@@ -151,10 +151,11 @@ const AlertMessage = styled.div`
             console.log(response.data)
             dispatch(loginSuccess(response.data));
           }
-          if (response.status === 401) {
+          if (response.status === 201) {
             dispatch(setMsg("Senha incorreta."));
             setTimeout(() => { dispatch(resetMsg()) }, 5000);
-          } else {
+          } 
+          if (response.status === 500) {
             dispatch(setMsg("Algo de errado aconteceu com a sua tentativa de login, tente novamente mais tarde."));
             setTimeout(() => { dispatch(resetMsg()) }, 7000);
           }

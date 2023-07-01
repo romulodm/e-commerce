@@ -32,5 +32,21 @@ module.exports = {
                 }
             })
         });
+    },
+
+    modifyPassword: (password, email) => {
+        return new Promise((acepted, rejected) => {
+            DB.query('UPDATE users SET password=? WHERE email=?', 
+            
+            [password, email], (error, results) => {
+                if(error) { 
+                    rejected(error); 
+                    return;
+                }
+
+                acepted(results);
+
+            })
+        });
     }
 }
