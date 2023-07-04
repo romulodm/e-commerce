@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMsg, resetMsg, setSucess, resetSucess } from "../redux/resetPasswordRedux";
 
 const ResetContainer = styled.div`
-
 `;
 
 const Wrapper = styled.div`

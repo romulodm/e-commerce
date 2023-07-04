@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     secure: false,
     auth: {
       user: `${process.env.EMAIL_NAME}`,
-      pass: `${process.env.EMAIL_PASSWORD}`,
+      pass: `${process.env.EMAIL_PASS}`,
     },
     tls: {
         rejectUnauthorized: false,
@@ -135,7 +135,7 @@ module.exports = {
                       <td>
                         <p align="center" style="color: #000000; font-size: 20px; font-weight: bold;">Use o código abaixo para resetar a sua senha:</p>
                   
-                        <div style="width: 300px; border: none; border-radius: 5px; background-color: #C7E1AD; color: white; font-size: 30px; font-weight: bold; text-align: center; margin: 0 auto;">
+                        <div style="width: 300px; border: none; border-radius: 5px; background-color: #849672; color: white; font-size: 30px; font-weight: bold; text-align: center; margin: 0 auto;">
                           <div align="center" style="padding: 10px 0px 10px 0px;">${req.body.code}</div>
                         </div>
   
