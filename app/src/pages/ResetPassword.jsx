@@ -4,6 +4,8 @@ import { Link } from "react-router-dom"
 import EmailIcon from '@mui/icons-material/Email';
 import CodeIcon from '@mui/icons-material/Code';
 import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import React, { useState, useEffect } from "react";
 
@@ -206,6 +208,8 @@ const ResetPassword = () => {
   const [showNewPasswordMessage, setNewPasswordMessage] = useState(false); // Exibir caixa de alteração de senha
   const [newPassword, setNewPassword] = useState(""); // Senha a a ser digitada
 
+  const [typePassowrd, setTypePassword] = useState("password");
+
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -298,6 +302,16 @@ const ResetPassword = () => {
     setNewPassword("")
   };
 
+  function changeTypePassword() {
+    if (typePassowrd == "password") {
+      setTypePassword("text")
+      return true
+    } else {
+      setTypePassword("password")
+      return true
+    }
+  };
+
   const cancelReset = () => {
     setCode(false)
     setResetPassword(false);
@@ -354,7 +368,21 @@ const ResetPassword = () => {
             <ConfirmationMessage>Insira a sua nova senha desejada:</ConfirmationMessage>
             <InputContainer>
               <LockIcon style={{ color: "gray"}}/>
-              <Input type='password' placeholder="Nova senha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/>
+              <Input type={typePassowrd} placeholder="Nova senha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/>
+
+              <React.Fragment>
+                {typePassowrd == "password" && (
+                  <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+                )}
+              </React.Fragment>
+
+              <React.Fragment>
+                {typePassowrd == "text" && (
+                  <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+                )}
+              </React.Fragment>
+
+
             </InputContainer>
             <ConfirmationButtons>
               <ConfirmationButton style={{backgroundColor:"lightgreen"}} onClick={checkNewPassword}>Confirmar</ConfirmationButton>

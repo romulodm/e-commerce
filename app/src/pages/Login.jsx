@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {mobile} from "../responsive";
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import CloseIcon from '@mui/icons-material/Close';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React from "react";
 
 import { useState, useEffect } from "react";
@@ -118,6 +119,7 @@ const AlertMessage = styled.div`
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [typePassowrd, setTypePassword] = useState("password");
 
     const loginButton = (e) => {
       e.preventDefault();
@@ -181,6 +183,16 @@ const AlertMessage = styled.div`
     return true
   }
 
+  function changeTypePassword() {
+    if (typePassowrd == "password") {
+      setTypePassword("text")
+      return true
+    } else {
+      setTypePassword("password")
+      return true
+    }
+  };
+
   function restartLogin() {
     setEmail("");
     setPassword("");
@@ -199,9 +211,22 @@ const AlertMessage = styled.div`
             <EmailIcon style={{ color: "gray"}}/>
             <Input placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </InputContainer>
+
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <Input type={typePassowrd} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            
+            <React.Fragment>
+              {typePassowrd == "password" && (
+                 <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
+
+            <React.Fragment>
+              {typePassowrd == "text" && (
+                 <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
           </InputContainer>
 
           <React.Fragment>

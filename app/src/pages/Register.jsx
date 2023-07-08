@@ -5,6 +5,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import CodeIcon from '@mui/icons-material/Code';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import React, { useState, useEffect } from "react";
 import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../axios/apiCalls";
@@ -188,6 +190,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [typePassowrd, setTypePassword] = useState("password");
+
   const validateRegistration = () => {
     const usernameRegex = /^[a-zA-Z\s]{3,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -285,6 +289,16 @@ const Register = () => {
     }
   };
 
+  function changeTypePassword() {
+    if (typePassowrd == "password") {
+      setTypePassword("text")
+      return true
+    } else {
+      setTypePassword("password")
+      return true
+    }
+  };
+
   const cancelRegister = () => {
     setCode(false)
     setEmailConfirmationMessage(false);
@@ -318,7 +332,20 @@ const Register = () => {
           </InputContainer>
           <InputContainer>
             <LockIcon style={{ color: "gray"}}/>
-            <Input type='password' value={password} placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
+            <Input type={typePassowrd} value={password} placeholder="Senha" onChange={(e) => setPassword(e.target.value)}/>
+
+
+            <React.Fragment>
+              {typePassowrd == "password" && (
+                 <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
+
+            <React.Fragment>
+              {typePassowrd == "text" && (
+                 <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
           </InputContainer>
 
           <React.Fragment>

@@ -97,8 +97,9 @@ module.exports = {
     getByCategories: async (req, res) => {
         try {
             const category = `["${req.query.category}"]`
-
+            
             const result = await ProductService.getByCategories(category);
+            console.log(result)
             res.status(200).json(result);
         } catch (err) {
             res.status(500).json(err);
