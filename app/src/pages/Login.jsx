@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { login, checkEmail } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
@@ -150,11 +150,10 @@ const AlertMessage = styled.div`
         .then(response => {
           console.log(response.status)
           if (response.status === 200) {
-            console.log(response.data)
             dispatch(loginSuccess(response.data));
           }
           if (response.status === 201) {
-            dispatch(setMsg("Senha incorreta."));
+            dispatch(setMsg("Credenciais inválidas."));
             setTimeout(() => { dispatch(resetMsg()) }, 5000);
           } 
           if (response.status === 500) {
@@ -184,7 +183,7 @@ const AlertMessage = styled.div`
   }
 
   function changeTypePassword() {
-    if (typePassowrd == "password") {
+    if (typePassowrd === "password") {
       setTypePassword("text")
       return true
     } else {
@@ -217,13 +216,13 @@ const AlertMessage = styled.div`
             <Input type={typePassowrd} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
             
             <React.Fragment>
-              {typePassowrd == "password" && (
+              {typePassowrd === "password" && (
                  <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
               )}
             </React.Fragment>
 
             <React.Fragment>
-              {typePassowrd == "text" && (
+              {typePassowrd === "text" && (
                  <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
               )}
             </React.Fragment>

@@ -240,11 +240,18 @@ const Register = () => {
       const testEmail = checkEmail({"email":email});
 
       testEmail.then(response => {
+        console.log(response.status)
         if (response.status === 200){
           codeEmail({"email":email, "code":code});
           setEmailConfirmationMessage(true);
-        } else {
+        }
+        if (response.status === 404) {
           dispatch(setMsg("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
+          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          restartRegister()
+        }
+        if (response.status === 500) {
+          dispatch(setMsg("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde."));
           setTimeout(() => { dispatch(resetMsg()) }, 7000)
           restartRegister()
         }}

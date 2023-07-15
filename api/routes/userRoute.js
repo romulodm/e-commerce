@@ -1,16 +1,47 @@
 const router = require("express").Router();
-const UserController = require("../controllers/UserController")
-const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require("./verifyToken");
+const {verifyTokenAndAuthorization, verifyTokenAndAdmin} = require("./verifyToken");
+
+const { User } = require('../models/User')
 
 
-//Update:
-router.put("/:id", verifyTokenAndAuthorization, UserController.modifyUser);
+router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        let deletedUser = await User.destroy({ where: { id: req.params.id } });
 
-//Delete:
-router.delete("/:id", verifyTokenAndAuthorization, UserController.deleteUser)
-//Get one user:
-router.get("/find/:id", verifyTokenAndAdmin, UserController.getUser)
-//Get all users:
-router.get("/find-all", verifyTokenAndAdmin, UserController.getAllUsers) 
+        if (deletedUser) {
+            return res.status(200).json();
+        }
+      } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const user = await User.findOne({ where: { id: req.params.id } });
+  
+        const { password, ...others } = user.toJSON();
+        res.status(200).json(others);
+  
+      } catch (error) {
+        res.status(500).json(error);
+      }
+})
+
+router.get("/find-all", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const users = await User.findAll();
+  
+        const sanitizedUsers = users.map(user => {
+            const { password, ...others } = user.toJSON();
+            return others;
+        });
+
+        res.status(200).json(sanitizedUsers);
+  
+      } catch (error) {
+        res.status(500).json(error);
+      }
+}) 
 
 module.exports = router;

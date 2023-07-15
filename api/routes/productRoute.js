@@ -1,19 +1,20 @@
 const router = require("express").Router();
-const ProductController = require("../controllers/ProductController")
+
 const { verifyToken, verifyTokenAndAuthorization,verifyTokenAndAdmin} = require("./verifyToken");
 
+const { Product } = require('../models/product/Product')
 
-router.post("/add", verifyTokenAndAdmin, ProductController.createProduct)
+router.post("/add", verifyTokenAndAdmin, async (req, res) => {});
 
-router.put("/change/:id", verifyTokenAndAdmin, ProductController.updateProduct)
+router.put("/change/:id", verifyTokenAndAdmin, async (req, res) => {});
 
-router.delete("/delete/:id", verifyTokenAndAdmin, ProductController.deleteProduct)
+router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {});
 
-router.get("/find/:id", ProductController.getProduct)
+router.get("/find/:id", async (req, res) => {});
 
-router.get("/find-all", ProductController.getAllProducts)
+router.get("/find-all", async (req, res) => {});
 
-router.get("/", ProductController.getByCategories)
+router.get("/", async (req, res) => {});
 
 
 module.exports = router;
