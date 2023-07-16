@@ -33,7 +33,7 @@ const Product = db.define('Product', {
 
 
 Product.belongsTo(Supplier, { constraint: true, foreignKey: 'idSupplier' });
-Supplier.hasMany(Product, { foreignKey: 'idProduct' });
+Supplier.hasMany(Product, { foreignKey: 'idSupplier' });
 
 Product.hasMany(ProductCategory, { foreignKey: 'idProduct' })
 ProductCategory.belongsTo(Product, { foreignKey: 'idProduct' })
@@ -46,10 +46,10 @@ Category.belongsToMany(Product, { through: { model: ProductCategory }, foreignKe
 */
 
 ProductImage.belongsTo(Product, { constraint: true, foreignKey: 'idProduct' });
-Product.hasMany(ProductImage, { constraint: true, foreignKey: 'idImage' });
+Product.hasMany(ProductImage, { foreignKey: 'idProduct' });
 
 ProductSize.belongsTo(Product, { constraint: true, foreignKey: 'idProduct' });
-Product.hasMany(ProductSize, { constraint: true, foreignKey: 'idSize' });
+Product.hasMany(ProductSize, { foreignKey: 'idProduct' });
 
 
 module.exports = Product;
