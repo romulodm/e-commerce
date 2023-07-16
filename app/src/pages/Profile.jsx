@@ -5,8 +5,14 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import styled from "styled-components";
+
 import LogoutIcon from '@mui/icons-material/Logout';
+import LoyaltyIcon from '@mui/icons-material/Loyalty';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
 
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -31,16 +37,8 @@ const ProfileSession = styled.div`
 
 const ProfileCover = styled.div`
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 120px;
     padding: 10px;
-`;
-
-const ProfileCoverImg = styled.img`
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 0.5px solid lightgray;
 `;
 
 const ProfileUserImg = styled.img`
@@ -52,7 +50,7 @@ const ProfileUserImg = styled.img`
     left: 0;
     right: 0;
     margin: auto;
-    top: 120px;
+    top: 10px;
     border: 3px solid white;
 `;
 
@@ -75,8 +73,47 @@ const Name = styled.h1`
   text-align: center;
 `;
 
+const Suport = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+const SuportItem = styled.div`
+    flex: 1;
+    margin: 15px 30px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    position: relative;
+    border-radius: 5px;
+`; 
+
+const ItemInfo = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer
+`;
+
+const ItemIcon = styled.div`
+`;
+
+const ItemName = styled.div`
+    color: white;
+    font-weight: 300;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 5px;
+`;
+
 const Button = styled.button`
-  width: 100%;
+  width: 10%;
   height: 40px;
   border: none;
   display: flex;
@@ -87,13 +124,12 @@ const Button = styled.button`
   color: white;
   align-items: center;
   cursor: pointer;
+  margin-top: 25px;
 `;
 
 
 const Profile = () => {
     const user = useSelector((state) => state.user.currentUser);
-
-    const name = user.Username;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -112,23 +148,55 @@ const Profile = () => {
             <ProfileSession>
                 <ProfileCover>
 
-                    <ProfileCoverImg src="https://img.freepik.com/fotos-premium/paisagem-bonita_157744-1239.jpg" />
-                    <ProfileUserImg src="https://www.arauco.cl/brasil/wp-content/uploads/sites/17/2021/08/CINZA-PURO-185x275--scaled.jpg"/>
+
+                    <ProfileUserImg src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"/>
 
                 </ProfileCover>
                 <ProfileInfo>
                     <ProfileInfoItens>
-                        <Name>{name}</Name>
-
+                        <Name>{user.username}</Name>
+                    </ProfileInfoItens>
+                    <Suport>
+                        <SuportItem>
+                            <ItemInfo>
+                                <ItemIcon><AssignmentIndOutlinedIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemName>Informações</ItemName>
+                            </ItemInfo>
+                        </SuportItem>
+                        <SuportItem>
+                            <ItemInfo>
+                                <ItemIcon><InventoryIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemName>Pedidos</ItemName>
+                            </ItemInfo>
+                        </SuportItem>
+                        <SuportItem>
+                            <ItemInfo>
+                                <ItemIcon><SupportAgentIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemName>Suporte</ItemName>
+                            </ItemInfo>
+                        </SuportItem>
+                        <SuportItem>
+                            <ItemInfo>
+                                <ItemIcon><LoyaltyIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemName>Cupons</ItemName>
+                            </ItemInfo>
+                        </SuportItem>
                         <React.Fragment>
                             {user.isAdmin === true && (
                             <Link to={`/admin`} style={{color: 'inherit', textDecoration: 'none'}}>
-                                <AdminPanelSettingsIcon />Admin Panel
+                                <SuportItem style={{ color: 'teal' }}>
+                                    <ItemInfo>
+                                        <ItemIcon><AdminPanelSettingsIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                        <ItemName>Admin</ItemName>     
+                                    </ItemInfo>
+                                </SuportItem>
                             </Link>
                             )}
                         </React.Fragment>
+
+                    </Suport>
+
                         <Button onClick={handleLogout}><LogoutIcon style={{marginRight: '15px'}}/>Sair</Button>
-                    </ProfileInfoItens>
                 </ProfileInfo>
             </ProfileSession>
         </Wrapper>

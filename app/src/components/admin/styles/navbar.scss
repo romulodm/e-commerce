@@ -1,11 +1,10 @@
 .navbar {
-    height: 50px;
-    border-bottom: 0.5px solid rgb(231, 228, 228);
+    height: 70px;
+    border-bottom: 0.5px solid lightgray;
     display: flex;
     align-items: center;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-bottom: 17px;
   
     .wrapper {
         width: 100%;
@@ -15,10 +14,11 @@
         justify-content: space-between;
   
         .search {
+            background-color: white;
             display: flex;
             align-items: center;
             border: 0.5px solid lightgray;
-            padding: 3px;
+            padding: 4.4px;
             border-radius: 5px;
     
             input {
@@ -35,14 +35,17 @@
         .items {
             display: flex;
             align-items: center;
+            
   
             .item {
+                
                 display: flex;
                 align-items: center;
                 margin-right: 20px;
                 position: relative;
   
             .button {
+                background-color: white;
                 display: flex;
                 align-items: center;
                 border: 0.5px solid lightgray;

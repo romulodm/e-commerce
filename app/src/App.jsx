@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/register" element={user ? <Navigate to="/profile" />  : <Register />}/>
         <Route path="/reset-password" element={user ? <Navigate to="/profile" />  : <ResetPassword />}/>
 
-        <Route path="/admin" element={user.isAdmin === true ? <AdminHome/> : <Navigate to="/" />} />
+        <Route path="/admin" element={user && user.isAdmin === true ? <AdminHome/> : <Navigate to="/" />} />
         
       </Routes>
     </BrowserRouter>

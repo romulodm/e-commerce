@@ -1,6 +1,7 @@
 $cor-principal: teal;
 
 .sidebar {
+
     flex: 1;
     border-right: 0.5px solid lightgray;
     min-height: 100vh;
@@ -21,15 +22,13 @@ $cor-principal: teal;
     }
   
     .center {
-      
       ul {
         list-style: none;
-        margin: 10px 10px;
-        padding: 0;
+        padding: 15px;
   
         .title {
           margin-left: 10px;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: bold;
           color: #999;
           margin-top: 15px;
@@ -37,6 +36,7 @@ $cor-principal: teal;
         }
   
         li {
+          margin: 0px 10px;
           display: flex;
           align-items: center;
           padding: 15px;
