@@ -1,0 +1,50 @@
+.widgets {
+    display: flex;
+    margin-left: 20px;
+
+    .widget{
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        padding: 10px;
+        border: 0.5px solid lightgray;
+        border-radius: 5px;
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        border-radius: 10px;
+        height: 100px;
+        margin-right: 20px;
+    
+        .left {
+            margin-left: 10px;
+        }
+        
+        .left,
+        .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    
+            .title {
+                font-weight: bold;
+                font-size: 15px;
+                color: rgb(160, 160, 160);
+            }
+        
+            .counter {
+                font-size: 30px;
+                font-weight: 800;
+            }
+        
+            .link {
+                width: max-content;
+                font-size: 13px;
+            }
+        
+            .icon {
+                padding: 15px;
+                border-radius: 10px;
+                align-content: center;
+            }
+        }
+    }
+}

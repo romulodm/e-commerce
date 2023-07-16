@@ -6,14 +6,14 @@ import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
+import AdminHome from "./pages/admin/AdminHome"
 import { useSelector } from "react-redux";
 
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
-  //console.log("user", user)
-  //const user = false
+
   return (
     <BrowserRouter>
       <Routes>
@@ -28,7 +28,8 @@ const App = () => {
         <Route path="/register" element={user ? <Navigate to="/profile" />  : <Register />}/>
         <Route path="/reset-password" element={user ? <Navigate to="/profile" />  : <ResetPassword />}/>
 
-
+        <Route path="/admin" element={user.isAdmin === true ? <AdminHome/> : <Navigate to="/" />} />
+        
       </Routes>
     </BrowserRouter>
   );

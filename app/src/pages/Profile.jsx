@@ -6,7 +6,9 @@ import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import styled from "styled-components";
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/userRedux";
@@ -105,24 +107,32 @@ const Profile = () => {
         <div>
         <Announcement />
         <Navbar />
-            <Container>
-                <Wrapper>
-                    <ProfileSession>
-                        <ProfileCover>
+        <Container>
+        <Wrapper>
+            <ProfileSession>
+                <ProfileCover>
 
-                            <ProfileCoverImg src="https://img.freepik.com/fotos-premium/paisagem-bonita_157744-1239.jpg" />
-                            <ProfileUserImg src="https://www.arauco.cl/brasil/wp-content/uploads/sites/17/2021/08/CINZA-PURO-185x275--scaled.jpg"/>
+                    <ProfileCoverImg src="https://img.freepik.com/fotos-premium/paisagem-bonita_157744-1239.jpg" />
+                    <ProfileUserImg src="https://www.arauco.cl/brasil/wp-content/uploads/sites/17/2021/08/CINZA-PURO-185x275--scaled.jpg"/>
 
-                        </ProfileCover>
-                        <ProfileInfo>
-                            <ProfileInfoItens>
-                                <Name>{name}</Name>
-                                <Button onClick={handleLogout}><LogoutIcon style={{marginRight: '15px'}}/>Sair</Button>
-                            </ProfileInfoItens>
-                        </ProfileInfo>
-                    </ProfileSession>
-                </Wrapper>
-            </Container>
+                </ProfileCover>
+                <ProfileInfo>
+                    <ProfileInfoItens>
+                        <Name>{name}</Name>
+
+                        <React.Fragment>
+                            {user.isAdmin === true && (
+                            <Link to={`/admin`} style={{color: 'inherit', textDecoration: 'none'}}>
+                                <AdminPanelSettingsIcon />Admin Panel
+                            </Link>
+                            )}
+                        </React.Fragment>
+                        <Button onClick={handleLogout}><LogoutIcon style={{marginRight: '15px'}}/>Sair</Button>
+                    </ProfileInfoItens>
+                </ProfileInfo>
+            </ProfileSession>
+        </Wrapper>
+        </Container>
         <Newsletter />
         <Footer />
         </div>
