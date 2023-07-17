@@ -6,6 +6,8 @@ const ProductSize = db.define('ProductSize', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
     },
     size: {
       type: DataTypes.INTEGER,

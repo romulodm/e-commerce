@@ -2,17 +2,32 @@ const router = require("express").Router();
 
 const { verifyTokenAndAdmin } = require("./verifyToken");
 
-const { Product } = require('../models/product/Product')
-const { Category } = require("../models/product/Category");
+const Product = require('../models/product/Product')
+const Category = require("../models/product/Category");
 
-const { ProductImage } = require('../models/product/ProductImage');
-const { ProductSize } = require('../models/product/ProductSize');
+const ProductImage = require('../models/product/ProductImage');
+const ProductSize = require('../models/product/ProductSize');
 
 router.post("/add", verifyTokenAndAdmin, async (req, res) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(200).json(newProduct);
   } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/add-category", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    console.log(req.body)
+    const category = await Category.findByPk(req.body.idCategory);
+    const product = await Product.findByPk(req.body.idProduct);
+    
+    await product.setCategories(category)
+
+    res.status(200).json();
+  } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });
@@ -47,7 +62,17 @@ router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {
 router.get("/find/:id", async (req, res) => {
   try {
 
-    const product = await Product.findByPk(req.params.id, { include: [ProductImage, ProductSize, Category] });
+    const product = await Product.findByPk(req.params.id, { 
+      include: [
+        {
+          model: ProductImage,
+          attributes: ['image'],
+        },
+        {
+          model: ProductSize,
+          attributes: ['size', 'quantity'],
+        },
+      ], } );
     res.status(200).json(product);
 
 } catch (err) {
@@ -58,10 +83,24 @@ router.get("/find/:id", async (req, res) => {
 router.get("/find-all", async (req, res) => {
     try {
 
-    const products = await Product.findAll( { include: [ProductImage, ProductSize, Category] } );
+    const products = await Product.findAll( {   
+      include: [
+        {
+          model: ProductImage,
+          attributes: ['image'],
+        },
+        {
+          model: ProductSize,
+          attributes: ['size', 'quantity'],
+        },
+        {
+          model: Category,
+        },
+      ], } );
     res.status(200).json(products);
     
 } catch (err) {
+  console.log(err)
     res.status(500).json(err);
   }
 });
@@ -76,40 +115,5 @@ router.get("/:category", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-router.post("/:id/add-image", verifyTokenAndAdmin, async (req, res) => {
-    try {
-      const { image } = req.body;
-      const productId = req.params.id;
-  
-      const newImage = await ProductImage.create({
-        image: image,
-        idProduct: productId,
-      });
-  
-      res.status(201).json(newImage);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
-
-router.post("/:id/add-size", verifyTokenAndAdmin, async (req, res) => {
-    try {
-      const { size, quantity } = req.body;
-      const productId = req.params.id;
-  
-      const newSize = await ProductSize.create({
-        size: size,
-        quantity: quantity,
-        idProduct: productId, 
-      });
-  
-      res.status(201).json(newSize);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
-
-
 
 module.exports = router;

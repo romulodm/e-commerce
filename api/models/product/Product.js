@@ -35,21 +35,18 @@ const Product = db.define('Product', {
 Product.belongsTo(Supplier, { constraint: true, foreignKey: 'idSupplier' });
 Supplier.hasMany(Product, { foreignKey: 'idSupplier' });
 
-Product.hasMany(ProductCategory, { foreignKey: 'idProduct' })
-ProductCategory.belongsTo(Product, { foreignKey: 'idProduct' })
-Category.hasMany(ProductCategory, { foreignKey: 'idCategory' })
-ProductCategory.belongsTo(Category, { foreignKey: 'idCategory' })
-
-/*
 Product.belongsToMany(Category, { through: { model: ProductCategory }, foreignKey: 'idProduct', constraint: true });
 Category.belongsToMany(Product, { through: { model: ProductCategory }, foreignKey: 'idCategory', constraint: true });
+/*
+Product.hasMany(ProductCategory, { foreignKey: 'idProduct' });
+ProductCategory.belongsTo(Product, { foreignKey: 'idProduct' });
+Category.hasMany(ProductCategory, { foreignKey: 'idCategory' });
+ProductCategory.belongsTo(Category, { foreignKey: 'idCategory' });
 */
-
 ProductImage.belongsTo(Product, { constraint: true, foreignKey: 'idProduct' });
-Product.hasMany(ProductImage, { foreignKey: 'idProduct' });
+Product.hasMany(ProductImage, { foreignKey: 'idProduct', onDelete: 'CASCADE', hooks: true  });
 
 ProductSize.belongsTo(Product, { constraint: true, foreignKey: 'idProduct' });
-Product.hasMany(ProductSize, { foreignKey: 'idProduct' });
-
+Product.hasMany(ProductSize, { foreignKey: 'idProduct', onDelete: 'CASCADE', hooks: true  });
 
 module.exports = Product;

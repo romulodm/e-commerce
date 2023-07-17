@@ -1,8 +1,7 @@
 const router = require("express").Router();
 const {verifyTokenAndAuthorization, verifyTokenAndAdmin} = require("./verifyToken");
 
-const { User } = require('../models/User')
-
+const User = require('../models/User')
 
 router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
