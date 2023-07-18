@@ -8,11 +8,10 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 import React, { useEffect, useState } from 'react';
 
-import { DataGrid,  GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 import { getUsers } from "../../axios/apiCalls";
 import AddUser from "../../components/admin/AddUsers";
-import DataTable from "../../components/admin/DataTable";
 
 const Wrapper = styled.div`
     display: flex;
