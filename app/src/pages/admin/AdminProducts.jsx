@@ -8,20 +8,21 @@ const Wrapper = styled.div`
     display: flex;
 `;
 
-const HomeContainer = styled.div`
+const ProductsContainer = styled.div`
     flex: 5;
 `;
 
-const AdminHome = () => {
+const AdminProducts = () => {
   return (
     <Wrapper>
         <Sidebar />
-        <HomeContainer>
+        <Navbar />
+        <ProductsContainer>
             <Navbar />
             <Widgets />
-        </HomeContainer>
+        </ProductsContainer>
     </Wrapper>
   );
 };
 
-export default AdminHome;
+export default AdminProducts;

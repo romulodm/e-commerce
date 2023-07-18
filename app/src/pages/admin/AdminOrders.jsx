@@ -8,20 +8,20 @@ const Wrapper = styled.div`
     display: flex;
 `;
 
-const HomeContainer = styled.div`
+const OrdersContainer = styled.div`
     flex: 5;
 `;
 
-const AdminHome = () => {
+const AdminOrders = () => {
   return (
     <Wrapper>
         <Sidebar />
-        <HomeContainer>
+        <OrdersContainer>
             <Navbar />
             <Widgets />
-        </HomeContainer>
+        </OrdersContainer>
     </Wrapper>
   );
 };
 
-export default AdminHome;
+export default AdminOrders;

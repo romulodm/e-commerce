@@ -7,6 +7,9 @@ import ResetPassword from "./pages/ResetPassword";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import AdminHome from "./pages/admin/AdminHome"
+import AdminUsers from "./pages/admin/AdminUsers"
+import AdminProducts from "./pages/admin/AdminProducts"
+import AdminOrders from "./pages/admin/AdminOrders"
 import { useSelector } from "react-redux";
 
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
@@ -29,6 +32,9 @@ const App = () => {
         <Route path="/reset-password" element={user ? <Navigate to="/profile" />  : <ResetPassword />}/>
 
         <Route path="/admin" element={user && user.isAdmin === true ? <AdminHome/> : <Navigate to="/" />} />
+        <Route path="/admin/users" element={user && user.isAdmin === true ? <AdminUsers/> : <Navigate to="/" />} />
+        <Route path="/admin/products" element={user && user.isAdmin === true ? <AdminProducts/> : <Navigate to="/" />} />
+        <Route path="/admin/orders" element={user && user.isAdmin === true ? <AdminOrders/> : <Navigate to="/" />} />
         
       </Routes>
     </BrowserRouter>

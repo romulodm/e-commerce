@@ -32,10 +32,11 @@ router.get("/find-all", verifyTokenAndAdmin, async (req, res) => {
         const users = await User.findAll();
   
         const sanitizedUsers = users.map(user => {
-            const { password, ...others } = user.toJSON();
+            const { password, updatedAt, ...others } = user.toJSON();
             return others;
         });
 
+        console.log(sanitizedUsers)
         res.status(200).json(sanitizedUsers);
   
       } catch (error) {

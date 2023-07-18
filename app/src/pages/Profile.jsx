@@ -80,9 +80,9 @@ const Suport = styled.div`
 
 const SuportItem = styled.div`
     flex: 1;
-    margin: 15px 30px;
-    width: 120px;
-    height: 120px;
+    margin: 3vh 3vh;
+    width: 12vh;
+    height: 12vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,24 +107,24 @@ const ItemIcon = styled.div`
 const ItemName = styled.div`
     color: white;
     font-weight: 300;
-    font-size: 20px;
+    font-size: 1.8vh;
     text-align: center;
     margin-top: 5px;
 `;
 
 const Button = styled.button`
-  width: 10%;
+  width: 20vh;
   height: 40px;
   border: none;
   display: flex;
-  align-items: center;
+  justify-content: center;
   border-radius: 5px;
-  padding: 15px 20px;
+  padding: 1vh 1vh;
   background-color: #800000;
   color: white;
   align-items: center;
   cursor: pointer;
-  margin-top: 25px;
+  margin-top: 3vh;
 `;
 
 
@@ -159,25 +159,25 @@ const Profile = () => {
                     <Suport>
                         <SuportItem>
                             <ItemInfo>
-                                <ItemIcon><AssignmentIndOutlinedIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemIcon><AssignmentIndOutlinedIcon style={{color: 'white', fontSize: '6vh'}}/></ItemIcon>
                                 <ItemName>Informações</ItemName>
                             </ItemInfo>
                         </SuportItem>
                         <SuportItem>
                             <ItemInfo>
-                                <ItemIcon><InventoryIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemIcon><InventoryIcon style={{color: 'white', fontSize: '6vh'}}/></ItemIcon>
                                 <ItemName>Pedidos</ItemName>
                             </ItemInfo>
                         </SuportItem>
                         <SuportItem>
                             <ItemInfo>
-                                <ItemIcon><SupportAgentIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemIcon><SupportAgentIcon style={{color: 'white', fontSize: '6vh'}}/></ItemIcon>
                                 <ItemName>Suporte</ItemName>
                             </ItemInfo>
                         </SuportItem>
                         <SuportItem>
                             <ItemInfo>
-                                <ItemIcon><LoyaltyIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                <ItemIcon><LoyaltyIcon style={{color: 'white', fontSize: '6vh'}}/></ItemIcon>
                                 <ItemName>Cupons</ItemName>
                             </ItemInfo>
                         </SuportItem>
@@ -186,7 +186,7 @@ const Profile = () => {
                             <Link to={`/admin`} style={{color: 'inherit', textDecoration: 'none'}}>
                                 <SuportItem style={{ color: 'teal' }}>
                                     <ItemInfo>
-                                        <ItemIcon><AdminPanelSettingsIcon style={{color: 'white', fontSize: '50'}}/></ItemIcon>
+                                        <ItemIcon><AdminPanelSettingsIcon style={{color: 'white', fontSize: '6vh'}}/></ItemIcon>
                                         <ItemName>Admin</ItemName>     
                                     </ItemInfo>
                                 </SuportItem>

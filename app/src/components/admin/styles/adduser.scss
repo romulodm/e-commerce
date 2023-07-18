@@ -1,0 +1,65 @@
+.add {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.724);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .modal {
+    padding: 5vh;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+
+    .close {
+      position: absolute;
+      top: 10px;
+      font-weight: bold;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .forms {
+        display: flex;
+        flex-direction: column;
+        width: 45vh;
+        justify-content: center;
+        padding: 20px;
+        align-items: center;
+
+        .input-container {
+            height: 4vh;
+            width: 90%;
+            border: 0.5px solid lightgray;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+      
+        .inputs {
+            flex: 1;
+            width: 100%;
+            min-width: 40%;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+        }
+
+        button {
+            height: 5vh;
+            width: 91%;
+            border: none;
+            border-radius: 5px;
+            padding: 1vh;
+            background-color: teal;
+            color: white;
+            cursor: pointer;
+        }
+    }
+  }
+}
