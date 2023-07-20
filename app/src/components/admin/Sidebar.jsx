@@ -43,7 +43,7 @@ const Sidebar = () => {
           <Link to="/admin/orders" style={{ textDecoration: "none" }}>
               <li>
               <CreditCardIcon className="icon" />
-                <span>Products</span>
+                <span>Orders</span>
               </li>
           </Link>
          

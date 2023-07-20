@@ -5,6 +5,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CloseIcon from '@mui/icons-material/Close';
 
 import React, { useState } from "react";
 
@@ -93,7 +94,7 @@ const AddUser = (prop) => {
         <div className="add">
         <div className="modal">
             <span className="close" onClick={() => prop.setOpen(false)}>
-            X
+            <CloseIcon style={{ color: "gray"}}/>
             </span>
             <form className="forms">
                 <h1>Add new User</h1>

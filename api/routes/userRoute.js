@@ -3,9 +3,9 @@ const {verifyTokenAndAuthorization, verifyTokenAndAdmin} = require("./verifyToke
 
 const User = require('../models/User')
 
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/delete/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
-        let deletedUser = await User.destroy({ where: { id: req.params.id } });
+      let deletedUser = await User.destroy({ where: { id: req.params.id } });
 
         if (deletedUser) {
             return res.status(200).json();
@@ -36,7 +36,6 @@ router.get("/find-all", verifyTokenAndAdmin, async (req, res) => {
             return others;
         });
 
-        console.log(sanitizedUsers)
         res.status(200).json(sanitizedUsers);
   
       } catch (error) {

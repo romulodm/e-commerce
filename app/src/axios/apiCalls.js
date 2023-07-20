@@ -71,3 +71,12 @@ export const getUsers = async () => {
     return false
   }
 };
+
+export const deleteUser = async (id) => {
+  try {
+    const res = await adminRequest.delete(`/user/delete/${id}`);
+    return res
+  } catch (err) {
+    return false
+  }
+};
