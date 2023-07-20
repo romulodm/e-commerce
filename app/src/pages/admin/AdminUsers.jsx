@@ -13,9 +13,12 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 import { getUsers } from "../../axios/apiCalls";
 import AddUser from "../../components/admin/AddUsers";
-import EditUser from "../../components/admin/EditUSer";
+import EditUser from "../../components/admin/EditUser";
 import DeleteUser from "../../components/admin/DeleteUser";
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setMessage, resetMessage, setSuccess, resetSuccess } from "../../redux/messagesRedux";
+
 
 const Wrapper = styled.div`
     display: flex;
@@ -103,6 +106,8 @@ const ActionIcon = styled.div`
 
 
 const AdminUsers = () => {
+  const messages = useSelector((state) => state.messages);
+  const dispatch = useDispatch();
 
   const actionColumn = [
     {
@@ -188,7 +193,8 @@ const AdminUsers = () => {
         setSelectedUser(users.find(user => user.id === userId))
         setOpenDelete(true)
       } else {
-        console.log("Você não pode se deletar, amigão!")
+        dispatch(setMessage("You can't delete yourself!"));
+        setTimeout(() => { dispatch(resetMessage()) }, 7000);
       }
     }; 
 
@@ -205,6 +211,15 @@ const AdminUsers = () => {
                     <TopButtons>
                         <TopButton onClick={() => setOpenAdd(true)}><AddIcon/>New User</TopButton>
                         <TopButton onClick={() => window.location.reload()}><RefreshIcon/>Refresh Table</TopButton>
+
+                        <React.Fragment>
+                          {messages.showMessage && (
+                          <div style={{display: "flex", alignItems: "center", textAlign: "center", height: "5vh", width: "390px", backgroundColor: "#f8d7da", color: "#721c24", borderColor: "#721c24", borderRadius: "5px"}}>
+                              <div style={{textAlign: "center", flex: 1}}>{messages.errorMessage}</div>
+                          </div>
+                          )}
+                        </React.Fragment>
+
                     </TopButtons>
 
                     <Table>

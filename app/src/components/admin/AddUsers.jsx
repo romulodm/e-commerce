@@ -10,12 +10,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMsg, resetMsg, setSucess, resetSucess } from "../../redux/registerRedux";
+import { setMessage, resetMessage, setSuccess, resetSuccess } from "../../redux/messagesRedux";
 
 import { registerUser, checkEmail } from "../../axios/apiCalls";
 
 const AddUser = (prop) => {
-    const register = useSelector((state) => state.register);
+    const messages = useSelector((state) => state.messages);
     const dispatch = useDispatch();
 
     const [username, setUsername] = useState("");
@@ -27,8 +27,8 @@ const AddUser = (prop) => {
     const validateRegistration = () => {
         const usernameRegex = /^[a-zA-Z\s]{3,}$/; 
         if (!usernameRegex.test(username)) {
-          dispatch(setMsg("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
-          setTimeout(() => { dispatch(resetMsg()) }, 5500)
+          dispatch(setMessage("Your name must be at least three characters long (no numbers or special symbols)."));
+          setTimeout(() => { dispatch(resetMessage()) }, 5500)
     
           return false;
         }
@@ -50,27 +50,27 @@ const AddUser = (prop) => {
                 tryRegister.then(response => {
                 if (response.status === 201) {
                     restartRegister();
-                    dispatch(setSucess());
-                    setTimeout(() => { dispatch(resetSucess()) }, 5500);
+                    dispatch(setSuccess());
+                    setTimeout(() => { dispatch(resetSuccess()) }, 5500);
                 } else {
-                    dispatch(setMsg("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
-                    setTimeout(() => { dispatch(resetMsg()) }, 7000);
+                    dispatch(setMessage("Something went wrong, try again later."));
+                    setTimeout(() => { dispatch(resetMessage()) }, 7000);
                     restartRegister();
                 }
                     }).catch(error => {
                         console.error(error)});
             }
             if (response.status === 404) {
-                dispatch(setMsg("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
-                setTimeout(() => { dispatch(resetMsg()) }, 7000)
+                dispatch(setMessage("This email is already being used."));
+                setTimeout(() => { dispatch(resetMessage()) }, 7000)
                 restartRegister()
             }
                 }).catch(error => {
                     console.error(error)});
         } 
         else {
-            dispatch(setMsg("Algo de errado aconteceu com o cadastro!"));
-            setTimeout(() => { dispatch(resetMsg()) }, 5500)
+            dispatch(setMessage("Something went wrong."));
+            setTimeout(() => { dispatch(resetMessage()) }, 5500)
         }
     };
 
@@ -100,7 +100,7 @@ const AddUser = (prop) => {
                 <h1>Add new User</h1>
 
                 <React.Fragment>
-                    {register.sucess && (
+                    {messages.showSuccess && (
                     <div style={{display: "flex", alignItems: "center", textAlign: "center", height: "6vh", width: "90%", marginBottom: "15px", backgroundColor: "#d7f8d9", color: "#2a791a", borderColor: "#acffa8", borderRadius: "5px"}}>
                         <div style={{textAlign: "center", flex: 1}}>Account created!</div>
                     </div>
@@ -138,9 +138,9 @@ const AddUser = (prop) => {
                 </form>
 
                 <React.Fragment>
-                    {register.showMsg && (
+                    {messages.showMessage && (
                     <div style={{display: "flex", alignItems: "center", textAlign: "center", height: "6vh", width: "90%", marginBottom: "15px", backgroundColor: "#f8d7da", color: "#721c24", borderColor: "#721c24", borderRadius: "5px"}}>
-                        <div style={{textAlign: "center", flex: 1}}>{register.errorMsg}</div>
+                        <div style={{textAlign: "center", flex: 1}}>{messages.errorMessage}</div>
                     </div>
                     )}
                 </React.Fragment>

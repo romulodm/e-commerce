@@ -7,8 +7,16 @@ import StoreIcon from "@mui/icons-material/Store";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/userRedux";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+      dispatch(logout());
+  }
+
   return (
     <div className="sidebar">
 
@@ -54,7 +62,7 @@ const Sidebar = () => {
               <span>Profile</span>
             </li>
           </Link>
-          <li>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>

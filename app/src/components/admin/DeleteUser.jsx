@@ -5,12 +5,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMsg, resetMsg } from "../../redux/registerRedux";
+import { setMessage, resetMessage } from "../../redux/messagesRedux";
 
 import { deleteUser } from "../../axios/apiCalls";
 
 const DeleteUser = (prop) => {
-    const register = useSelector((state) => state.register);
+    const messages = useSelector((state) => state.messages);
     const dispatch = useDispatch();
     
     const tryDeleteUser = async (e) => {
@@ -21,12 +21,12 @@ const DeleteUser = (prop) => {
             if (response.status === 200) {
                 window.location.reload();
             } else {
-                dispatch(setMsg("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
-                setTimeout(() => { dispatch(resetMsg()) }, 7000);
+                dispatch(setMessage("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
+                setTimeout(() => { dispatch(resetMessage()) }, 7000);
             }
             }).catch(error => {
-                dispatch(setMsg("Algo deu errado, tente novamente mais tarde!"));
-                setTimeout(() => { dispatch(resetMsg()) }, 7000);});
+                dispatch(setMessage("Algo deu errado, tente novamente mais tarde!"));
+                setTimeout(() => { dispatch(resetMessage()) }, 7000);});
     }
 
     function closeWindow() {
@@ -43,9 +43,9 @@ const DeleteUser = (prop) => {
             <form className="forms">
                 
                 <React.Fragment>
-                    {register.showMsg && (
+                    {messages.showMessage&& (
                     <div style={{display: "flex", alignItems: "center", textAlign: "center", height: "6vh", width: "80%", backgroundColor: "#f8d7da", color: "#721c24", borderColor: "#721c24", borderRadius: "5px"}}>
-                        <div style={{textAlign: "center", flex: 1}}>{register.errorMsg}</div>
+                        <div style={{textAlign: "center", flex: 1}}>{messages.errorMessage}</div>
                     </div>
                     )}
                 </React.Fragment>

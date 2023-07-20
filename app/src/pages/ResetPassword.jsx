@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 
 import { checkEmail, resetPasswordEmail, modifyPassword } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { setMsg, resetMsg, setSucess, resetSucess } from "../redux/resetPasswordRedux";
+import { setMessage, resetMessage, setSuccess, resetSuccess } from "../redux/messagesRedux";
 
 const ResetContainer = styled.div`
 `;
@@ -196,7 +196,7 @@ function generateRandomCode() {
 
 const ResetPassword = () => {
 
-  const resetpasswordstate = useSelector((state) => state.resetpassword);
+  const messages = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -213,8 +213,8 @@ const ResetPassword = () => {
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      dispatch(setMsg("Insira um e-mail válido, por gentileza."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("Insira um e-mail válido, por gentileza."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
       return false;
     }
     return true
@@ -239,8 +239,8 @@ const ResetPassword = () => {
       const testEmail = checkEmail({ "email": email });
         testEmail.then(response => {
         if (response.status === 200){
-          dispatch(setMsg("Não existe contas cadastradas com este e-mail!"));
-          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          dispatch(setMessage("Não existe uma conta cadastrada com este e-mail."));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000)
           setEmail("")
         } else {
           resetPasswordEmail({"email":email, "code":code});
@@ -261,8 +261,8 @@ const ResetPassword = () => {
       setNewPasswordMessage(true)
     }
     else {
-      dispatch(setMsg("O código informado não é válido!"));
-      setTimeout(() => { dispatch(resetMsg()) }, 7000)
+      dispatch(setMessage("O código informado não é válido!"));
+      setTimeout(() => { dispatch(resetMessage()) }, 7000)
     }
   };
 
@@ -270,8 +270,8 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (newPassword.length < 5) {
-      dispatch(setMsg("A senha precisa ter pelo menos 5 caracteres."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("A senha precisa ter pelo menos 5 caracteres."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
       return false
     }
 
@@ -279,12 +279,12 @@ const ResetPassword = () => {
     testReset.then(response => {
       if (response.status === 200){
         restartResetPassword()
-        dispatch(setSucess());
-        setTimeout(() => { dispatch(resetSucess()) }, 5500)
+        dispatch(setSuccess());
+        setTimeout(() => { dispatch(resetSuccess()) }, 5500)
 
         } else {
-          dispatch(setMsg("Algo de errado aconteceu com a tentativa de mudança de senha, tente novamente mais tarde."));
-          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          dispatch(setMessage("Algo de errado aconteceu com a tentativa de mudança de senha, tente novamente mais tarde."));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000)
           restartResetPassword()
         }}
     ).catch(error => {
@@ -315,7 +315,7 @@ const ResetPassword = () => {
   const cancelReset = () => {
     setCode(false)
     setResetPassword(false);
-    dispatch(resetMsg());
+    dispatch(resetMessage());
   }
 
   return ( 
@@ -332,7 +332,7 @@ const ResetPassword = () => {
           </TextContainer>
 
           <React.Fragment>
-            {resetpasswordstate.sucess && (
+            {messages.showSuccess && (
               <SucessContainer>
                 <SucessMessage>Sua senha foi modificada com sucesso!</SucessMessage>
               </SucessContainer>
@@ -345,9 +345,9 @@ const ResetPassword = () => {
           </InputContainer>
 
           <React.Fragment>
-            {resetpasswordstate.showMsg && (
-              <AlertContainer visible={resetpasswordstate.showMsg}>
-                <AlertMessage>{resetpasswordstate.errorMsg}</AlertMessage>
+            {messages.showMessage && (
+              <AlertContainer visible={messages.showMessage}>
+                <AlertMessage>{messages.errorMessage}</AlertMessage>
               </AlertContainer>
             )}
           </React.Fragment>

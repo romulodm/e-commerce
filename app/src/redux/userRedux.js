@@ -4,18 +4,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     currentUser: null,
-    errorMsg: "",
-    showMsg: false,
   },
   reducers: {
-    setMsg: (state, action) => {
-      state.errorMsg = action.payload;
-      state.showMsg = true
-    },
-    resetMsg: (state) => {
-      state.errorMsg = "";
-      state.showMsg = false
-    },
     loginSuccess: (state, action) => {
       state.currentUser = action.payload;
     },
@@ -25,5 +15,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setMsg, resetMsg, loginSuccess, logout } = userSlice.actions;
+export const { loginSuccess, logout } = userSlice.actions;
 export default userSlice.reducer;

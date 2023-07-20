@@ -11,7 +11,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React, { useState, useEffect } from "react";
 import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { setMsg, resetMsg, setSucess, resetSucess } from "../redux/registerRedux";
+import { setMessage, resetMessage, setSuccess, resetSuccess } from "../redux/messagesRedux";
 
 const ContainerRegister = styled.div`
 `;
@@ -183,7 +183,7 @@ function generateRandomCode() {
 }
 
 const Register = () => {
-  const register = useSelector((state) => state.register);
+  const messages = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
@@ -197,20 +197,20 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!usernameRegex.test(username)) {
-      dispatch(setMsg("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
 
       return false;
     }
     if (!emailRegex.test(email)) {
-      dispatch(setMsg("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
 
       return false;
     }
     if (password.length < 5) {
-      dispatch(setMsg("A sua senha deve ter pelo menos cinco caracteres."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("A sua senha deve ter pelo menos cinco caracteres."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
 
       return false;
     }
@@ -246,13 +246,13 @@ const Register = () => {
           setEmailConfirmationMessage(true);
         }
         if (response.status === 404) {
-          dispatch(setMsg("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
-          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          dispatch(setMessage("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000)
           restartRegister()
         }
         if (response.status === 500) {
-          dispatch(setMsg("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde."));
-          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          dispatch(setMessage("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde."));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000)
           restartRegister()
         }}
         ).catch(error => {
@@ -277,12 +277,12 @@ const Register = () => {
         if (response.status === 201){
           confirmationEmail({"username":username, "email":email})
           restartRegister()
-          dispatch(setSucess());
-          setTimeout(() => { dispatch(resetSucess()) }, 5500)
+          dispatch(setSuccess());
+          setTimeout(() => { dispatch(resetSuccess()) }, 5500)
 
         } else {
-          dispatch(setMsg("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
-          setTimeout(() => { dispatch(resetMsg()) }, 7000)
+          dispatch(setMessage("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000)
           restartRegister()
         }}
 
@@ -291,8 +291,8 @@ const Register = () => {
     }
 
     else {
-      dispatch(setMsg("Infelizmente o código informado é inválido."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("Infelizmente o código informado é inválido."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
     }
   };
 
@@ -309,7 +309,7 @@ const Register = () => {
   const cancelRegister = () => {
     setCode(false)
     setEmailConfirmationMessage(false);
-    dispatch(resetMsg());
+    dispatch(resetMessage());
   }
 
   return (  
@@ -322,7 +322,7 @@ const Register = () => {
         <Form>
 
           <React.Fragment>
-            {register.sucess && (
+            {messages.showSuccess && (
               <SucessContainer>
                 <SucessMessage>Sua conta foi criada com sucesso!</SucessMessage>
               </SucessContainer>
@@ -356,9 +356,9 @@ const Register = () => {
           </InputContainer>
 
           <React.Fragment>
-            {register.showMsg && (
-              <AlertContainer visible={register.showMsg}>
-                <AlertMessage>{register.errorMsg}</AlertMessage>
+            {messages.showMessage && (
+              <AlertContainer visible={messages.showMessage}>
+                <AlertMessage>{messages.errorMessage}</AlertMessage>
               </AlertContainer>
             )}
           </React.Fragment>

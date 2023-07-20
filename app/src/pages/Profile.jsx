@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/userRedux";
-import { useNavigate } from "react-router-dom"
+
 const Container = styled.div`
 `;
 
@@ -132,11 +132,9 @@ const Profile = () => {
     const user = useSelector((state) => state.user.currentUser);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());
-        navigate('/');
     };
 
     return (

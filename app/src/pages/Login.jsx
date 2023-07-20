@@ -10,7 +10,8 @@ import { useState } from "react";
 import { login, checkEmail } from "../axios/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
-import { setMsg, resetMsg, loginSuccess } from "../redux/userRedux";
+import { setMessage, resetMessage } from "../redux/messagesRedux";
+import { loginSuccess } from "../redux/userRedux";
 
 
 const ContainerLogin = styled.div`
@@ -113,8 +114,7 @@ const AlertMessage = styled.div`
   `;
   
   const Login = () => {
-    
-    const user = useSelector((state) => state.user);
+    const messages = useSelector((state) => state.messages);
     const dispatch = useDispatch();
     
     const [email, setEmail] = useState("");
@@ -133,49 +133,44 @@ const AlertMessage = styled.div`
       testEmail
         .then(response => {
           if (response.status === 200) {
-            dispatch(setMsg("Não existe nenhuma conta cadastrada com este e-mail."));
-            setTimeout(() => { dispatch(resetMsg()) }, 7000);
+            dispatch(setMessage("Não existe nenhuma conta cadastrada com este e-mail."));
+            setTimeout(() => { dispatch(resetMessage()) }, 7000);
             restartLogin();
           } else {
             tryLogin();
           }
         })
         .catch(error => {
-          console.error(error);
+          dispatch(setMessage("Algo deu errado, tente novamente mais tarde."));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000);
         });
     };
     
     function tryLogin() {
       login({ "email": email, "password": password })
         .then(response => {
-          console.log(response.status)
           if (response.status === 200) {
             dispatch(loginSuccess(response.data));
           }
           if (response.status === 201) {
-            dispatch(setMsg("Credenciais inválidas."));
-            setTimeout(() => { dispatch(resetMsg()) }, 5000);
+            dispatch(setMessage("Credenciais inválidas."));
+            setTimeout(() => { dispatch(resetMessage()) }, 5000);
           } 
           if (response.status === 500) {
-            dispatch(setMsg("Algo de errado aconteceu com a sua tentativa de login, tente novamente mais tarde."));
-            setTimeout(() => { dispatch(resetMsg()) }, 7000);
+            dispatch(setMessage("Algo de errado aconteceu com a sua tentativa de login, tente novamente mais tarde."));
+            setTimeout(() => { dispatch(resetMessage()) }, 7000);
           }
         })
         .catch(error => {
-          console.error(error);
+          dispatch(setMessage("Algo deu errado, tente novamente mais tarde."));
+          setTimeout(() => { dispatch(resetMessage()) }, 7000);
         });
     };
     
   function checkInputs() {
     if (email.length < 5) {
-      dispatch(setMsg("Por gentileza, preencha os campos do login corretamente."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
-
-      return false;
-    }
-    if (password.length < 5) {
-      dispatch(setMsg("Por gentileza, preencha os campos do login corretamente."));
-      setTimeout(() => { dispatch(resetMsg()) }, 5500)
+      dispatch(setMessage("Por gentileza, preencha os campos do login corretamente."));
+      setTimeout(() => { dispatch(resetMessage()) }, 5500)
 
       return false;
     }
@@ -229,9 +224,9 @@ const AlertMessage = styled.div`
           </InputContainer>
 
           <React.Fragment>
-            {user.showMsg && (
-              <AlertContainer visible={user.showMsg}>
-                <AlertMessage>{user.errorMsg}</AlertMessage>
+            {messages.showMessage && (
+              <AlertContainer visible={messages.showMessage}>
+                <AlertMessage>{messages.errorMessage}</AlertMessage>
               </AlertContainer>
             )}
           </React.Fragment>
