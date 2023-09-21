@@ -10,8 +10,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React, { useState, useEffect } from "react";
 
 import { checkEmail, resetPasswordEmail, modifyPassword } from "../axios/apiCalls";
-import { useDispatch, useSelector } from "react-redux";
-import { setMessage, resetMessage, setSuccess, resetSuccess } from "../redux/messagesRedux";
+
+
+import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
+
 
 const ResetContainer = styled.div`
 `;
@@ -103,49 +106,6 @@ const LinkContainer = styled.div`
   color: gray;
 `;
 
-const SucessContainer =  styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-  background-color: #d7f8d9;
-  color: #2a791a;
-  border: 1px solid #acffa8;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  height: 50px;
-  text-align: center;
-`;
-
-const SucessMessage = styled.div`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-  border: none;
-`;
-
-const AlertContainer = styled.div`
-  display: ${props => (props.visible ? "flex" : "none")};
-  align-items: center;
-  margin-bottom: 15px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  height: 50px;
-  text-align: center;
-`;
-
-const AlertMessage = styled.div`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-  border: none;
-`;
-
 const ConfirmationContainer = styled.div`
   display: ${props => (props.visible ? "flex" : "none")};
   flex-direction: column;
@@ -195,9 +155,8 @@ function generateRandomCode() {
 };
 
 const ResetPassword = () => {
-
-  const messages = useSelector((state) => state.messages);
-  const dispatch = useDispatch();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [email, setEmail] = useState("");
 
@@ -213,8 +172,8 @@ const ResetPassword = () => {
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      dispatch(setMessage("Insira um e-mail válido, por gentileza."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("Insira um e-mail válido, por gentileza.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
       return false;
     }
     return true
@@ -239,8 +198,8 @@ const ResetPassword = () => {
       const testEmail = checkEmail({ "email": email });
         testEmail.then(response => {
         if (response.status === 200){
-          dispatch(setMessage("Não existe uma conta cadastrada com este e-mail."));
-          setTimeout(() => { dispatch(resetMessage()) }, 7000)
+          setErrorMessage("Não existe uma conta cadastrada com este e-mail.");
+          setTimeout(() => { setErrorMessage("") }, 7000)
           setEmail("")
         } else {
           resetPasswordEmail({"email":email, "code":code});
@@ -261,8 +220,8 @@ const ResetPassword = () => {
       setNewPasswordMessage(true)
     }
     else {
-      dispatch(setMessage("O código informado não é válido!"));
-      setTimeout(() => { dispatch(resetMessage()) }, 7000)
+      setErrorMessage("O código informado não é válido!");
+      setTimeout(() => { setErrorMessage("") }, 7000)
     }
   };
 
@@ -270,8 +229,8 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (newPassword.length < 5) {
-      dispatch(setMessage("A senha precisa ter pelo menos 5 caracteres."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("A senha precisa ter pelo menos 5 caracteres.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
       return false
     }
 
@@ -279,12 +238,12 @@ const ResetPassword = () => {
     testReset.then(response => {
       if (response.status === 200){
         restartResetPassword()
-        dispatch(setSuccess());
-        setTimeout(() => { dispatch(resetSuccess()) }, 5500)
+        setSuccessMessage("Senha resetada com sucesso!")
+        setTimeout(() => { setSuccessMessage("") }, 5500)
 
         } else {
-          dispatch(setMessage("Algo de errado aconteceu com a tentativa de mudança de senha, tente novamente mais tarde."));
-          setTimeout(() => { dispatch(resetMessage()) }, 7000)
+          setErrorMessage("Algo de errado aconteceu com a tentativa de mudança de senha, tente novamente mais tarde.");
+          setTimeout(() => { setErrorMessage("") }, 7000)
           restartResetPassword()
         }}
     ).catch(error => {
@@ -315,7 +274,6 @@ const ResetPassword = () => {
   const cancelReset = () => {
     setCode(false)
     setResetPassword(false);
-    dispatch(resetMessage());
   }
 
   return ( 
@@ -332,11 +290,8 @@ const ResetPassword = () => {
           </TextContainer>
 
           <React.Fragment>
-            {messages.showSuccess && (
-              <SucessContainer>
-                <SucessMessage>Sua senha foi modificada com sucesso!</SucessMessage>
-              </SucessContainer>
-            )}
+            {successMessage !== "" && 
+            <SuccessMessage Message = {successMessage} successHeight = {"6vh"} successWidth = {"100%"} marginMessage = {"0 0 15px 0"}></SuccessMessage>}
           </React.Fragment>
 
           <InputContainer>
@@ -345,11 +300,8 @@ const ResetPassword = () => {
           </InputContainer>
 
           <React.Fragment>
-            {messages.showMessage && (
-              <AlertContainer visible={messages.showMessage}>
-                <AlertMessage>{messages.errorMessage}</AlertMessage>
-              </AlertContainer>
-            )}
+              {errorMessage !== "" && 
+              <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"100%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
           </React.Fragment>
           
           <ConfirmationContainer visible={showResetPassword}>

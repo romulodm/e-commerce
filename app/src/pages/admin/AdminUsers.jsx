@@ -16,8 +16,10 @@ import AddUser from "../../components/admin/AddUsers";
 import EditUser from "../../components/admin/EditUser";
 import DeleteUser from "../../components/admin/DeleteUser";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setMessage, resetMessage, setSuccess, resetSuccess } from "../../redux/messagesRedux";
+import { useSelector } from "react-redux";
+
+import ErrorMessage from "../../components/ErrorMessage";
+
 
 
 const Wrapper = styled.div`
@@ -106,8 +108,7 @@ const ActionIcon = styled.div`
 
 
 const AdminUsers = () => {
-  const messages = useSelector((state) => state.messages);
-  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const actionColumn = [
     {
@@ -193,8 +194,8 @@ const AdminUsers = () => {
         setSelectedUser(users.find(user => user.id === userId))
         setOpenDelete(true)
       } else {
-        dispatch(setMessage("You can't delete yourself!"));
-        setTimeout(() => { dispatch(resetMessage()) }, 7000);
+        setErrorMessage("You can't delete yourself!");
+        setTimeout(() => { setErrorMessage("") }, 5000);
       }
     }; 
 
@@ -213,11 +214,10 @@ const AdminUsers = () => {
                         <TopButton onClick={() => window.location.reload()}><RefreshIcon/>Refresh Table</TopButton>
 
                         <React.Fragment>
-                          {messages.showMessage && (
-                          <div style={{display: "flex", alignItems: "center", textAlign: "center", height: "5vh", width: "390px", backgroundColor: "#f8d7da", color: "#721c24", borderColor: "#721c24", borderRadius: "5px"}}>
-                              <div style={{textAlign: "center", flex: 1}}>{messages.errorMessage}</div>
-                          </div>
-                          )}
+
+                          {errorMessage !== "" && 
+                          <ErrorMessage Message = {errorMessage} errorHeight = {"5vh"} errorWidth = {"390px"}></ErrorMessage>}
+                        
                         </React.Fragment>
 
                     </TopButtons>

@@ -10,8 +10,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import React, { useState, useEffect } from "react";
 import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../axios/apiCalls";
-import { useDispatch, useSelector } from "react-redux";
-import { setMessage, resetMessage, setSuccess, resetSuccess } from "../redux/messagesRedux";
+
+import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
 
 const ContainerRegister = styled.div`
 `;
@@ -91,49 +92,6 @@ const LinkContainer = styled.div`
   color: gray;
 `;
 
-const AlertContainer = styled.div`
-  display: ${props => (props.visible ? "flex" : "none")};
-  align-items: center;
-  margin-bottom: 15px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  height: 50px;
-  text-align: center;
-`;
-
-const AlertMessage = styled.div`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-  border: none;
-`;
-
-const SucessContainer =  styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-  background-color: #d7f8d9;
-  color: #2a791a;
-  border: 1px solid #acffa8;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  height: 50px;
-  text-align: center;
-`;
-
-const SucessMessage = styled.div`
-      flex: 1;
-      min-width: 40%;
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-`;
-
 const ConfirmationContainer = styled.div`
   display: ${props => (props.visible ? "flex" : "none")};
   flex-direction: column;
@@ -183,8 +141,8 @@ function generateRandomCode() {
 }
 
 const Register = () => {
-  const messages = useSelector((state) => state.messages);
-  const dispatch = useDispatch();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -197,20 +155,20 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!usernameRegex.test(username)) {
-      dispatch(setMessage("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais)."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais).");
+      setTimeout(() => { setErrorMessage("") }, 5500)
 
       return false;
     }
     if (!emailRegex.test(email)) {
-      dispatch(setMessage("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
 
       return false;
     }
     if (password.length < 5) {
-      dispatch(setMessage("A sua senha deve ter pelo menos cinco caracteres."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("A sua senha deve ter pelo menos cinco caracteres.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
 
       return false;
     }
@@ -246,13 +204,13 @@ const Register = () => {
           setEmailConfirmationMessage(true);
         }
         if (response.status === 404) {
-          dispatch(setMessage("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!"));
-          setTimeout(() => { dispatch(resetMessage()) }, 7000)
+          setErrorMessage("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!");
+          setTimeout(() => { setErrorMessage("") }, 7000)
           restartRegister()
         }
         if (response.status === 500) {
-          dispatch(setMessage("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde."));
-          setTimeout(() => { dispatch(resetMessage()) }, 7000)
+          setErrorMessage("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde.");
+          setTimeout(() => { setErrorMessage() }, 7000)
           restartRegister()
         }}
         ).catch(error => {
@@ -277,12 +235,12 @@ const Register = () => {
         if (response.status === 201){
           confirmationEmail({"username":username, "email":email})
           restartRegister()
-          dispatch(setSuccess());
-          setTimeout(() => { dispatch(resetSuccess()) }, 5500)
+          setSuccessMessage("Conta criada com sucesso!")
+          setTimeout(() => { setSuccessMessage("") }, 5500)
 
         } else {
-          dispatch(setMessage("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!"));
-          setTimeout(() => { dispatch(resetMessage()) }, 7000)
+          setErrorMessage("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!");
+          setTimeout(() => { setErrorMessage("") }, 7000)
           restartRegister()
         }}
 
@@ -291,8 +249,8 @@ const Register = () => {
     }
 
     else {
-      dispatch(setMessage("Infelizmente o código informado é inválido."));
-      setTimeout(() => { dispatch(resetMessage()) }, 5500)
+      setErrorMessage("Infelizmente o código informado é inválido.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
     }
   };
 
@@ -309,7 +267,6 @@ const Register = () => {
   const cancelRegister = () => {
     setCode(false)
     setEmailConfirmationMessage(false);
-    dispatch(resetMessage());
   }
 
   return (  
@@ -322,11 +279,8 @@ const Register = () => {
         <Form>
 
           <React.Fragment>
-            {messages.showSuccess && (
-              <SucessContainer>
-                <SucessMessage>Sua conta foi criada com sucesso!</SucessMessage>
-              </SucessContainer>
-            )}
+              {successMessage !== "" && 
+              <SuccessMessage Message = {successMessage} successHeight = {"6vh"} successWidth = {"100%"} marginMessage = {"0 0 15px 0"}></SuccessMessage>}
           </React.Fragment>
 
           <InputContainer>
@@ -356,11 +310,8 @@ const Register = () => {
           </InputContainer>
 
           <React.Fragment>
-            {messages.showMessage && (
-              <AlertContainer visible={messages.showMessage}>
-                <AlertMessage>{messages.errorMessage}</AlertMessage>
-              </AlertContainer>
-            )}
+              {errorMessage !== "" && 
+              <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"100%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
           </React.Fragment>
 
           <ConfirmationContainer visible={showEmailConfirmationMessage}>

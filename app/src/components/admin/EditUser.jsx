@@ -11,24 +11,24 @@ import React, { useState } from "react";
 
 import { registerUser, checkEmail } from "../../axios/apiCalls";
 
-import SuccessMessage from "../SuccessMessage";
 import ErrorMessage from "../ErrorMessage";
+import SuccessMessage from "../SuccessMessage";
 
-const AddUser = (prop) => {
+const EditUser = (prop) => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState(prop.user.username);
+    const [email, setEmail] = useState(prop.user.email);
+    const [password, setPassword] = useState(prop.user.username);
 
     const [typePassowrd, setTypePassword] = useState("password");
 
     const validateRegistration = () => {
         const usernameRegex = /^[a-zA-Z\s]{3,}$/; 
         if (!usernameRegex.test(username)) {
-          setErrorMessage("Your name must be at least three characters long (no numbers or special symbols).");
-          setTimeout(() => { setErrorMessage("") }, 5000);
+          setErrorMessage("The name must be at least three characters long (no numbers or special symbols).");
+          setTimeout(() => { setErrorMessage("") }, 5500)
     
           return false;
         }
@@ -50,32 +50,32 @@ const AddUser = (prop) => {
                 tryRegister.then(response => {
                 if (response.status === 201) {
                     restartRegister();
-                    setSuccessMessage("Account created!")
-                    setTimeout(() => { setSuccessMessage("") }, 5000);
+                    setSuccessMessage("Informations changed!")
+                    setTimeout(() => { setSuccessMessage("") }, 5500);
                 } else {
-                    setErrorMessage("Something went wrong, try again later.");
-                    setTimeout(() => { setErrorMessage("") }, 5000);
+                    setErrorMessage("Something went wrong with your registration, please try again later!");
+                    setTimeout(() => { setErrorMessage("") }, 7000);
                     restartRegister();
                 }
                     }).catch(error => {
                         console.error(error)});
             }
             if (response.status === 404) {
-                setErrorMessage("This email is already being used.");
-                setTimeout(() => { setErrorMessage("") }, 5000);
+                setErrorMessage("There is already an account registered with this email. Please enter a valid email!");
+                setTimeout(() => { setErrorMessage("") }, 7000)
                 restartRegister()
             }
                 }).catch(error => {
                     console.error(error)});
         } 
         else {
-            setErrorMessage("Something went wrong.");
-            setTimeout(() => { setErrorMessage("") }, 5000);
+            setErrorMessage("Something wrong happened with the registration!");
+            setTimeout(() => { setErrorMessage() }, 5500)
         }
     };
 
     function changeTypePassword() {
-        if (typePassowrd === "password") {
+        if (typePassowrd == "password") {
             setTypePassword("text")
             return true
         } else {
@@ -90,18 +90,23 @@ const AddUser = (prop) => {
         setPassword("");
     };
 
+    function closeWindow() {
+        prop.setOpen(false)
+        prop.setSelectedUser(false)
+    }
+
     return (
         <div className="add">
         <div className="modal">
-            <span className="close" onClick={() => prop.setOpen(false)}>
+            <span className="close" onClick={() => closeWindow()}>
             <CloseIcon style={{ color: "gray"}}/>
             </span>
             <form className="forms">
-                <h1>Add new User</h1>
+                <h1>Edit User</h1>
 
                 <React.Fragment>
                     {successMessage !== "" && 
-                    <SuccessMessage Message = {successMessage} successHeight = {"6vh"} successWidth = {"90%"} marginMessage = {"0 0 15px 0"}></SuccessMessage>}
+                    <SuccessMessage Message = {successMessage} successHeight = {"6vh"} successWidth = {"100%"} marginMessage = {"0 0 15px 0"}></SuccessMessage>}
                 </React.Fragment>
 
                 <form className="input-container">
@@ -122,13 +127,13 @@ const AddUser = (prop) => {
                     onChange={(e) => setPassword(e.target.value)}/>
 
                     <React.Fragment>
-                        {typePassowrd === "password" && (
+                        {typePassowrd == "password" && (
                             <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
                         )}
                     </React.Fragment>
 
                     <React.Fragment>
-                        {typePassowrd === "text" && (
+                        {typePassowrd == "text" && (
                             <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
                         )}
                     </React.Fragment>
@@ -136,14 +141,14 @@ const AddUser = (prop) => {
 
                 <React.Fragment>
                     {errorMessage !== "" && 
-                    <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"90%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
+                    <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"91%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
                 </React.Fragment>
 
                 <button onClick={handleSubmit}>Send</button>
-            </form>
+                </form>
         </div>
         </div>
     );
 };
 
-export default AddUser;
+export default EditUser;
