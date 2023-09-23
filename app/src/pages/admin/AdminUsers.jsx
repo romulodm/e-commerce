@@ -9,6 +9,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 import React, { useEffect, useState } from 'react';
 
+import LinearProgress from '@mui/material/LinearProgress';
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 import { getUsers } from "../../axios/apiCalls";
@@ -64,12 +65,13 @@ const TopButton = styled.button`
     justify-content: center;
     padding: 1vh;
     align-items: center;
-    background-color: teal;
+    background-color: #0F71F2;
     color: white;
     cursor: pointer;
 `;
 
 const Table = styled.div`
+  width: 100%;
 `;
 
 const UserImage = styled.img`
@@ -103,12 +105,22 @@ const ActionTitle = styled.div`
 `;
 
 const ActionIcon = styled.div`
-  
 `;
 
+const ProgressArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const GridProgress = styled.div`
+  width: 99.6%;
+`;
 
 const AdminUsers = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const actionColumn = [
     {
@@ -158,30 +170,35 @@ const AdminUsers = () => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     
-    const [users, setUsers] = useState(false);
+    const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(false);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-          try {
-            const req = getUsers();
-            req.then(response => {
-                const usersData = response.data;
-                setUsers(usersData);
-              }).catch(error => {
-                console.log(error)
-              });
-          } catch (error) {
-            console.log(error);
-          }
-        };
-
-        if (!users){
-          fetchUsers();
-        }
+      if (users.length === 0){
+        fetchUsers();
+      }
 
     }, []);
 
+    const fetchUsers = async () => {
+      try {
+
+        if (isLoading === false) {
+          setIsLoading(true)
+        }
+
+        const req = getUsers();
+        req.then(response => {
+            const usersData = response.data;
+            setUsers(usersData);
+            setIsLoading(false)
+          }).catch(error => {
+            console.log(error)
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     function editUser (userId) {
       setSelectedUser(users.find(user => user.id === userId))
@@ -211,7 +228,7 @@ const AdminUsers = () => {
 
                     <TopButtons>
                         <TopButton onClick={() => setOpenAdd(true)}><AddIcon/>New User</TopButton>
-                        <TopButton onClick={() => window.location.reload()}><RefreshIcon/>Refresh Table</TopButton>
+                        <TopButton onClick={() => fetchUsers()}><RefreshIcon/>Refresh Table</TopButton>
 
                         <React.Fragment>
 
@@ -222,26 +239,40 @@ const AdminUsers = () => {
 
                     </TopButtons>
 
-                    <Table>
-                        <DataGrid className="datagrid"
-                            rows={users}
-                            columns={columns.concat(actionColumn)}
-                            initialState={{
-                                pagination: {
-                                  paginationModel: {
-                                    pageSize: 10,
-                                  },
-                                },
-                              }}
-                              slotProps={{
-                                toolbar: {
-                                  showQuickFilter: true,
-                                  quickFilterProps: { debounceMs: 500 },
-                                },
-                              }}
-                              slots={{ toolbar: GridToolbar }}
-                        />
-                    </Table>
+                    <React.Fragment>
+                        {isLoading && (
+                          <ProgressArea>
+                            <GridProgress>
+                              <LinearProgress color="secondary" variant="query" /> 
+                            </GridProgress>
+                          </ProgressArea>
+                        )}
+
+                        {(isLoading === false || users.length > 0) && (
+                          <Table>
+
+                            <DataGrid 
+                                rows={users}
+                                columns={columns.concat(actionColumn)}
+                                initialState={{
+                                    pagination: {
+                                      paginationModel: {
+                                        pageSize: 10,
+                                      },
+                                    },
+                                  }}
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
+                                      quickFilterProps: { debounceMs: 500 },
+                                    },
+                                  }}
+                                  slots={{ toolbar: GridToolbar }}
+                            />
+
+                          </Table>
+                        )}
+                    </React.Fragment>
 
             </UsersGrid>
             </UsersContainer>

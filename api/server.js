@@ -1,16 +1,16 @@
 require('dotenv').config({path:'vars.env'});
 const express = require('express');
 const cors = require('cors');
-const db = require('./db')
+const db = require('./db');
 
-const userRoute = require("./routes/userRoute")
+const userRoute = require("./routes/userRoute");
 const authRoute = require("./routes/authRoute");
-const emailRoute = require("./routes/emailRoute")
-const productRoute = require("./routes/productRoute")
-const categoryRoute = require("./routes/categoryRoute")
-const imageRoute = require("./routes/imageRoute")
-const sizeRoute = require("./routes/sizeRoute")
-const supplierRoute = require("./routes/supplierRoute")
+const emailRoute = require("./routes/emailRoute");
+const productRoute = require("./routes/productRoute");
+const categoryRoute = require("./routes/categoryRoute");
+const imageRoute = require("./routes/imageRoute");
+const sizeRoute = require("./routes/sizeRoute");
+const supplierRoute = require("./routes/supplierRoute");
 
 const server = express();
 server.use(cors());
@@ -18,7 +18,7 @@ server.use(express.json());
 
 server.use("/rep-api/user", userRoute);
 server.use("/rep-api/auth", authRoute);
-server.use("/rep-api/email", emailRoute)
+server.use("/rep-api/email", emailRoute);
 server.use("/rep-api/product", productRoute);
 server.use("/rep-api/category", categoryRoute);
 server.use("/rep-api/image", imageRoute);

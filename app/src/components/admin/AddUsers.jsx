@@ -6,6 +6,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import React, { useState } from "react";
 
@@ -17,6 +19,7 @@ import ErrorMessage from "../ErrorMessage";
 const AddUser = (prop) => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -37,6 +40,7 @@ const AddUser = (prop) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if (validateRegistration()) {
 
@@ -44,15 +48,16 @@ const AddUser = (prop) => {
 
             testEmail.then(response => {
             if (response.status === 200){
-                
                 const tryRegister = registerUser({"username": username, "email": email, "password": password});
       
                 tryRegister.then(response => {
                 if (response.status === 201) {
+                    setIsLoading(false);
                     restartRegister();
                     setSuccessMessage("Account created!")
                     setTimeout(() => { setSuccessMessage("") }, 5000);
                 } else {
+                    setIsLoading(false);
                     setErrorMessage("Something went wrong, try again later.");
                     setTimeout(() => { setErrorMessage("") }, 5000);
                     restartRegister();
@@ -61,15 +66,18 @@ const AddUser = (prop) => {
                         console.error(error)});
             }
             if (response.status === 404) {
+                setIsLoading(false);
                 setErrorMessage("This email is already being used.");
                 setTimeout(() => { setErrorMessage("") }, 5000);
                 restartRegister()
             }
                 }).catch(error => {
+                    setIsLoading(false);
                     console.error(error)});
         } 
         else {
-            setErrorMessage("Something went wrong.");
+            setIsLoading(false);
+            setErrorMessage("Fill in the fields correctly.");
             setTimeout(() => { setErrorMessage("") }, 5000);
         }
     };
@@ -140,6 +148,14 @@ const AddUser = (prop) => {
                 </React.Fragment>
 
                 <button onClick={handleSubmit}>Send</button>
+
+                <React.Fragment>
+                    {isLoading && (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                        <CircularProgress />
+                    </Box>
+                    )}
+                </React.Fragment>
             </form>
         </div>
         </div>

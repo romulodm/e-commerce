@@ -6,6 +6,8 @@ import CodeIcon from '@mui/icons-material/Code';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import React, { useState, useEffect } from "react";
 
@@ -87,7 +89,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   padding: 15px 20px;
-  background-color: teal;
+  background-color: #0F71F2;
   color: white;
   cursor: pointer;
 `;
@@ -157,6 +159,7 @@ function generateRandomCode() {
 const ResetPassword = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [email, setEmail] = useState("");
 
@@ -172,6 +175,7 @@ const ResetPassword = () => {
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      setIsLoading(false);
       setErrorMessage("Insira um e-mail válido, por gentileza.");
       setTimeout(() => { setErrorMessage("") }, 5500)
       return false;
@@ -181,6 +185,11 @@ const ResetPassword = () => {
 
   const resetButton = (e) => {
     e.preventDefault();
+    if ((showNewPasswordMessage !== false) || (showResetPassword !== false)){
+      return false
+    }
+
+    setIsLoading(true);
     
     if (validateEmail() && code === false) {
       const randomCode = generateRandomCode();
@@ -194,14 +203,17 @@ const ResetPassword = () => {
 
 
   const testCode = () => {
+
     if (code !== false){
       const testEmail = checkEmail({ "email": email });
         testEmail.then(response => {
         if (response.status === 200){
+          setIsLoading(false);
           setErrorMessage("Não existe uma conta cadastrada com este e-mail.");
           setTimeout(() => { setErrorMessage("") }, 7000)
           setEmail("")
         } else {
+          setIsLoading(false);
           resetPasswordEmail({"email":email, "code":code});
           setResetPassword(true);
         }}
@@ -227,26 +239,31 @@ const ResetPassword = () => {
 
   const checkNewPassword = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (newPassword.length < 5) {
       setErrorMessage("A senha precisa ter pelo menos 5 caracteres.");
       setTimeout(() => { setErrorMessage("") }, 5500)
+      setIsLoading(false);
       return false
     }
 
     const testReset = modifyPassword({ "email": email, "password":newPassword});
     testReset.then(response => {
       if (response.status === 200){
+        setIsLoading(false);
         restartResetPassword()
         setSuccessMessage("Senha resetada com sucesso!")
         setTimeout(() => { setSuccessMessage("") }, 5500)
 
         } else {
+          setIsLoading(false);
           setErrorMessage("Algo de errado aconteceu com a tentativa de mudança de senha, tente novamente mais tarde.");
           setTimeout(() => { setErrorMessage("") }, 7000)
           restartResetPassword()
         }}
     ).catch(error => {
+      setIsLoading(false);
       console.error(error);
     });
 
@@ -272,8 +289,10 @@ const ResetPassword = () => {
   };
 
   const cancelReset = () => {
-    setCode(false)
+    setCode(false);
     setResetPassword(false);
+    setNewPassword("");
+    setNewPasswordMessage(false);
   }
 
   return ( 
@@ -311,7 +330,7 @@ const ResetPassword = () => {
               <Input placeholder="Código" value={codeResetPassword} onChange={(e) => setCodeResetPassword(e.target.value)}/>
             </InputContainer>
             <ConfirmationButtons>
-              <ConfirmationButton style={{backgroundColor:"lightgreen"}} onClick={checkResetCode}>Confirmar</ConfirmationButton>
+              <ConfirmationButton style={{backgroundColor:"green"}} onClick={checkResetCode}>Confirmar</ConfirmationButton>
               <ConfirmationButton style={{backgroundColor:"red"}}  onClick={cancelReset}>Cancelar</ConfirmationButton>
             </ConfirmationButtons>
           </ConfirmationContainer>
@@ -337,12 +356,20 @@ const ResetPassword = () => {
 
             </InputContainer>
             <ConfirmationButtons>
-              <ConfirmationButton style={{backgroundColor:"lightgreen"}} onClick={checkNewPassword}>Confirmar</ConfirmationButton>
+              <ConfirmationButton style={{backgroundColor:"green"}} onClick={checkNewPassword}>Confirmar</ConfirmationButton>
               <ConfirmationButton style={{backgroundColor:"red"}}  onClick={cancelReset}>Cancelar</ConfirmationButton>
             </ConfirmationButtons>
           </ConfirmationContainer>
 
           <Button onClick={resetButton}>Enviar</Button>
+
+          <React.Fragment>
+            {isLoading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                <CircularProgress />
+              </Box>
+            )}
+          </React.Fragment>
         
         </Form>
         <LinkContainer>

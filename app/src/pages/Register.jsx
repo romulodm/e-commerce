@@ -7,6 +7,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import CodeIcon from '@mui/icons-material/Code';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import React, { useState, useEffect } from "react";
 import { registerUser, confirmationEmail, codeEmail, checkEmail } from "../axios/apiCalls";
@@ -73,7 +75,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   padding: 15px 20px;
-  background-color: teal;
+  background-color: #0F71F2;
   color: white;
   cursor: pointer;
 `;
@@ -143,6 +145,7 @@ function generateRandomCode() {
 const Register = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -157,13 +160,13 @@ const Register = () => {
     if (!usernameRegex.test(username)) {
       setErrorMessage("O seu nome deve ter pelo menos três caracteres (sem números ou símbolos especiais).");
       setTimeout(() => { setErrorMessage("") }, 5500)
-
+      
       return false;
     }
     if (!emailRegex.test(email)) {
       setErrorMessage("O email precisa ter pelo menos cinco caracteres e estar com a formatação correta.");
       setTimeout(() => { setErrorMessage("") }, 5500)
-
+      
       return false;
     }
     if (password.length < 5) {
@@ -177,6 +180,8 @@ const Register = () => {
 
   const registerButton = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     if (validateRegistration() && code === false) {
       const randomCode = generateRandomCode();
       setCode(randomCode);
@@ -194,26 +199,32 @@ const Register = () => {
   }, [code]);
 
   const testCode = () => {
-    if (code != false){
+    if (code !== false){
+      if (isLoading === false) {
+        setIsLoading(true);
+      }
       const testEmail = checkEmail({"email":email});
 
       testEmail.then(response => {
-        console.log(response.status)
         if (response.status === 200){
+          setIsLoading(false);
           codeEmail({"email":email, "code":code});
           setEmailConfirmationMessage(true);
         }
         if (response.status === 404) {
-          setErrorMessage("Já existe uma conta registrada com este e-mail. Por gentileza, insira um e-mail válido!");
+          setIsLoading(false);
+          setErrorMessage("Já existe uma conta registrada com este e-mail. Insira um e-mail válido.");
           setTimeout(() => { setErrorMessage("") }, 7000)
           restartRegister()
         }
         if (response.status === 500) {
+          setIsLoading(false);
           setErrorMessage("Algo de errado aconteceu com a sua tentativa de criar uma conta. Tente novamente mais tarde.");
           setTimeout(() => { setErrorMessage() }, 7000)
           restartRegister()
         }}
         ).catch(error => {
+          setIsLoading(false);
           console.error(error)});
       }
   };
@@ -229,16 +240,21 @@ const Register = () => {
 
   const checkEmailConfirmation = () => {
     if (code === codeEmailConfirmation) {
+      if (isLoading === false) {
+        setIsLoading(true);
+      }
       const tryRegister = registerUser({"username":username, "email":email, "password":password})
 
       tryRegister.then(response => {
         if (response.status === 201){
+          setIsLoading(false);
           confirmationEmail({"username":username, "email":email})
           restartRegister()
           setSuccessMessage("Conta criada com sucesso!")
           setTimeout(() => { setSuccessMessage("") }, 5500)
 
         } else {
+          setIsLoading(false);
           setErrorMessage("Algo de errado aconteceu com o seu cadastro, tente novamente mais tarde!");
           setTimeout(() => { setErrorMessage("") }, 7000)
           restartRegister()
@@ -255,7 +271,7 @@ const Register = () => {
   };
 
   function changeTypePassword() {
-    if (typePassowrd == "password") {
+    if (typePassowrd === "password") {
       setTypePassword("text")
       return true
     } else {
@@ -297,13 +313,13 @@ const Register = () => {
 
 
             <React.Fragment>
-              {typePassowrd == "password" && (
+              {typePassowrd === "password" && (
                  <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
               )}
             </React.Fragment>
 
             <React.Fragment>
-              {typePassowrd == "text" && (
+              {typePassowrd === "text" && (
                  <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
               )}
             </React.Fragment>
@@ -327,6 +343,14 @@ const Register = () => {
           </ConfirmationContainer>
 
           <Button onClick={registerButton}>Cadastrar-se</Button>
+
+          <React.Fragment>
+            {isLoading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                <CircularProgress />
+              </Box>
+            )}
+          </React.Fragment>
         
         </Form>
         <LinkContainer>

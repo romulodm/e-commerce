@@ -4,6 +4,8 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import React from "react";
 
 import { useState } from "react";
@@ -77,7 +79,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   padding: 15px 20px;
-  background-color: teal;
+  background-color: #0F71F2;
   color: white;
   cursor: pointer;
 `;
@@ -98,7 +100,8 @@ const LinkContainer = styled.div`
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -107,6 +110,9 @@ const Login = () => {
 
   const loginButton = (e) => {
     e.preventDefault();
+    if (isLoading === false) {
+      setIsLoading(true);
+    }
   
     if (checkInputs() === false) {
       return false
@@ -117,6 +123,7 @@ const Login = () => {
     testEmail
       .then(response => {
         if (response.status === 200) {
+          setIsLoading(false);
           setErrorMessage("Não existe nenhuma conta cadastrada com este e-mail.");
           setTimeout(() => { setErrorMessage("") }, 7000);
           restartLogin();
@@ -125,6 +132,7 @@ const Login = () => {
         }
       })
       .catch(error => {
+        setIsLoading(false)
         setErrorMessage("Algo deu errado, tente novamente mais tarde.");
         setTimeout(() => { setErrorMessage("") }, 7000);
       });
@@ -134,96 +142,109 @@ const Login = () => {
     login({ "email": email, "password": password })
       .then(response => {
         if (response.status === 200) {
+          setIsLoading(false)
           dispatch(loginSuccess(response.data));
         }
         if (response.status === 201) {
+          setIsLoading(false)
           setErrorMessage("Credenciais inválidas.");
           setTimeout(() => { setErrorMessage("") }, 5000);
         } 
         if (response.status === 500) {
+          setIsLoading(false)
           setErrorMessage("Algo de errado aconteceu com a sua tentativa de login, tente novamente mais tarde.");
           setTimeout(() => { setErrorMessage("") }, 7000);
         }
       })
       .catch(error => {
+        setIsLoading(false)
         setErrorMessage("Algo deu errado, tente novamente mais tarde.");
         setTimeout(() => { setErrorMessage("") }, 7000);
       });
   };
   
-function checkInputs() {
-  if (email.length < 5) {
-    setErrorMessage("Por gentileza, preencha os campos do login corretamente.");
-    setTimeout(() => { setErrorMessage("") }, 5500)
+  function checkInputs() {
+    if (email.length < 5) {
+      setIsLoading(false)
+      setErrorMessage("Preencha os campos do login corretamente.");
+      setTimeout(() => { setErrorMessage("") }, 5500)
 
-    return false;
-  }
-  return true
-}
-
-function changeTypePassword() {
-  if (typePassowrd === "password") {
-    setTypePassword("text")
-    return true
-  } else {
-    setTypePassword("password")
+      return false;
+    }
     return true
   }
-};
 
-function restartLogin() {
-  setEmail("");
-  setPassword("");
-};
+  function changeTypePassword() {
+    if (typePassowrd === "password") {
+      setTypePassword("text")
+      return true
+    } else {
+      setTypePassword("password")
+      return true
+    }
+  };
 
-return ( 
-  <ContainerLogin>
-    <Wrapper>
-      <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
-        <Image src="https://i.ibb.co/thQcBw8/image-1.png" style={{cursor: "pointer"}}/>
-      </Link>
-      <Title>SUA CONTA PARA TUDO NA REP</Title>
-      <Form>
+  function restartLogin() {
+    setEmail("");
+    setPassword("");
+  };
 
-        <InputContainer>
-          <EmailIcon style={{ color: "gray"}}/>
-          <Input placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
-        </InputContainer>
+  return ( 
+    <ContainerLogin>
+      <Wrapper>
+        <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
+          <Image src="https://i.ibb.co/thQcBw8/image-1.png" style={{cursor: "pointer"}}/>
+        </Link>
+        <Title>SUA CONTA PARA TUDO NA REP</Title>
+        <Form>
 
-        <InputContainer>
-          <LockIcon style={{ color: "gray"}}/>
-          <Input type={typePassowrd} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <InputContainer>
+            <EmailIcon style={{ color: "gray"}}/>
+            <Input placeholder="E-mail" type="e-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          </InputContainer>
+
+          <InputContainer>
+            <LockIcon style={{ color: "gray"}}/>
+            <Input type={typePassowrd} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            
+            <React.Fragment>
+              {typePassowrd === "password" && (
+                  <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
+
+            <React.Fragment>
+              {typePassowrd === "text" && (
+                  <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+              )}
+            </React.Fragment>
+          </InputContainer>
+
+          <React.Fragment>
+              {errorMessage !== "" && 
+              <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"100%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
+          </React.Fragment>
           
-          <React.Fragment>
-            {typePassowrd === "password" && (
-                <VisibilityIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
-            )}
-          </React.Fragment>
+          <Button onClick={loginButton}>Entrar</Button>
 
           <React.Fragment>
-            {typePassowrd === "text" && (
-                <VisibilityOffIcon style={{ color: "#CECECE", marginRight: "10px", marginLeft: "10px", fontSize: "1.2em", cursor: "pointer"}} onClick={changeTypePassword}/>
+            {isLoading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                <CircularProgress />
+              </Box>
             )}
           </React.Fragment>
-        </InputContainer>
-
-        <React.Fragment>
-            {errorMessage !== "" && 
-            <ErrorMessage Message = {errorMessage} errorHeight = {"6vh"} errorWidth = {"100%"} marginMessage={"0px 0px 15px 0px"}></ErrorMessage>}
-        </React.Fragment>
         
-        <Button onClick={loginButton}>Entrar</Button>
-      
-      </Form>
-      <LinkContainer>
-        <Link to={`/reset-password`} style={{color: 'inherit', textDecoration: 'none'}}>Recupere sua senha</Link>
-      </LinkContainer>
-      <LinkContainer>
-        <Link to={`/register`} style={{color: 'inherit', textDecoration: 'none'}} >Crie uma conta</Link>
-      </LinkContainer>
-    </Wrapper>
-  </ContainerLogin>
-);
+        </Form>
+        <LinkContainer>
+          <Link to={`/reset-password`} style={{color: 'inherit', textDecoration: 'none'}}>Recupere sua senha</Link>
+        </LinkContainer>
+        <LinkContainer>
+          <Link to={`/register`} style={{color: 'inherit', textDecoration: 'none'}} >Crie uma conta</Link>
+        </LinkContainer>
+      </Wrapper>
+    </ContainerLogin>
+  );
 };
 
 export default Login;

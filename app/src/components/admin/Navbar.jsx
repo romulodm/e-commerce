@@ -17,7 +17,7 @@ const Navbar = () => {
           <div className="item">
             <Link to={`/`} style={{color: 'inherit', textDecoration: 'none'}}>
               <div className="button">
-                <div><LogoutIcon /></div>
+                <div><LogoutIcon style={{ color: "#ffffff"}}/></div>
                 <div className="title">Back to e-commerce</div>
               </div>
             </Link>
