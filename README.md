@@ -39,11 +39,17 @@ Comecei esse projeto com o objetivo de explorar algumas das tecnologias mais dem
 
 :heavy_check_mark: `Carrinho de Compras`
 
+:heavy_check_mark: `Painel Administrativo:`
+
+-  `Usuários:`
+-  :heavy_check_mark: `Listagem de Usuários`
+- :heavy_check_mark: `CRUD de Usuários`
+
 :hourglass_flowing_sand: `Lista de Favoritos`
 
 :hourglass_flowing_sand: `Filtragem de Produtos`
 
-:hourglass_flowing_sand: `Painel Administrativo`
+
 
 
 <br>
